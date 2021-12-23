@@ -31,7 +31,6 @@ config :ex_aws, :s3,
   host: "",
   region: ""
 
-
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

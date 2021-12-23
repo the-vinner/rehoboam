@@ -23,8 +23,7 @@ config :rehoboam, RehoboamWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "mUrUD6Emjj434GJpL0apbU73fmdHgwqo0JVoX5vcvIuMfp203SyjkYVeOWv3qTpw",
-  watchers: [
-  ]
+  watchers: []
 
 config :ex_aws,
   debug_requests: true
@@ -37,6 +36,7 @@ config :potionx,
       ]
     ]
   ]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

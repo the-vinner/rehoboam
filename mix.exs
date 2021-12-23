@@ -39,6 +39,8 @@ defmodule Rehoboam.MixProject do
       {:absinthe_relay, "~> 1.5.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dataloader, "~> 1.0"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
       {:phoenix, "~> 1.6.5"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
