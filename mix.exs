@@ -36,9 +36,9 @@ defmodule Rehoboam.MixProject do
       {:absinthe, "~> 1.6.0"},
       {:absinthe_phoenix, "~> 2.0.2"},
       {:absinthe_plug, "~> 1.5"},
-      {:absinthe_relay, "~> 1.6.6"},
+      {:absinthe_relay, "~> 1.5.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:ex_microlink, ">= 0.1.1"},
+      {:dataloader, "~> 1.0"},
       {:phoenix, "~> 1.6.5"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -46,10 +46,11 @@ defmodule Rehoboam.MixProject do
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.17.5"},
+      {:potionx, "~> 0.8.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:nodejs, "~> 2.0"},
-      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
+      {:redix, "~> 1.1"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
@@ -70,8 +71,7 @@ defmodule Rehoboam.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 end
