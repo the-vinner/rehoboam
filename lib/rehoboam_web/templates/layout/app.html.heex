@@ -1,5 +1,38 @@
-<main class="container">
-  <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-  <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-  <%= @inner_content %>
-</main>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%= assigns[:meta]["title"] %></title>
+    <meta name="description" content={strip_tags(assigns[:meta]["description"])}>
+    <meta name="og:title" content={assigns[:meta]["title"]}>
+    <meta name="og:description" content={strip_tags(assigns[:meta]["description"])}>
+    <%= if not is_nil(assigns[:meta]["image"]) and assigns[:meta]["image"] !== "" do %>
+    <meta property="og:image" content={assigns[:meta]["image"]} />
+    <% else %>
+    <meta property="og:image" content="/images/og.png" />
+    <% end %>
+    <%= for {name, content} <- metas() do %>
+    <meta name={name} content={content}>
+    <% end %>
+    <%= for stylesheet <- stylesheets() do %>
+      <link rel="stylesheet" href={stylesheet} />
+    <% end %>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#07223e">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+  <body>
+    <%= @inner_content %>
+    <%= for script <- scripts() do %>
+      <script async defer type="module" src={script}></script>
+    <% end %>
+  </body>
+</html>
+

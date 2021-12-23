@@ -47,5 +47,5 @@ config :potionx,
 
 config :wallaby,
   driver: Wallaby.Chrome,
-  otp_app: :lire,
+  otp_app: :rehoboam,
   screenshot_on_failure: false

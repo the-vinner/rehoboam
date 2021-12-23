@@ -14,6 +14,7 @@ defmodule Rehoboam.Application do
       RehoboamWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Rehoboam.PubSub},
+      {Finch, name: RehoboamFinch},
       # Start the Endpoint (http/https)
       RehoboamWeb.Endpoint
       # Start a worker by calling: Rehoboam.Worker.start_link(arg)

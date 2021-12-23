@@ -6,7 +6,7 @@ import fs from 'fs'
 import { resolve } from "path";
 
 export default defineConfig({
-  base: process.env.NODE_ENV === "production" ? "/public/client/" : "/",
+  base: process.env.NODE_ENV === "production" ? "/admin/client/" : "/",
   resolve: {
     alias: {
       // @ts-ignore
@@ -22,7 +22,7 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     manifest: true,
-    outDir: "../../priv/static/public/client",
+    outDir: "../../priv/static/admin/client",
     rollupOptions: {
       // overwrite default .html entry
       input: './src/entry-client.ts'

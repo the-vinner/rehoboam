@@ -8,13 +8,13 @@
 import Config
 
 config :rehoboam,
-  ecto_repos: [Rehoboam.Repo]
+  ecto_repos: [Rehoboam.Repo],
+  file_upload: Rehoboam.FileUploadLocal
 
 # Configures the endpoint
 config :rehoboam, RehoboamWeb.Endpoint,
   cdn_url: "",
   files_directory: "./files",
-  file_upload: Rehoboam.FileUploadLocal,
   url: [host: "localhost"],
   render_errors: [view: RehoboamWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Rehoboam.PubSub,
@@ -50,6 +50,8 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :tesla, :adapter, {Tesla.Adapter.Finch, [name: RehoboamFinch, receive_timeout: 60_000]}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
