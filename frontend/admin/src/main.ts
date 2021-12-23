@@ -12,7 +12,7 @@ import {
 } from 'vue-router'
 import { parse, stringify } from 'qs'
 import App from './App'
-import routes from './routes'
+// import routes from './routes'
 import useUrql from './useUrql';
 
 if (import.meta.env.PROD) {
@@ -33,17 +33,8 @@ export function createApp(args : {headers?: string[]} = {}) {
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     // @ts-ignore
     parseQuery: parse,
-    routes, 
+    routes: [], 
     scrollBehavior(to, from, savedPosition) {
-      if (
-        (from.name === to.name && to.query?.aside || from.query?.aside) &&
-        document.getElementById('book')
-      ) {
-        return {
-          behavior: 'smooth',
-          top: (document.getElementById('book')?.getBoundingClientRect().top || 0) + window.pageYOffset
-        }
-      }
       // always scroll to top
       return { top: 0 }
     },

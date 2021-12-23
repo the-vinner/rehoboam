@@ -43,12 +43,6 @@ defmodule RehoboamWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", RehoboamWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
   pipeline :require_auth do
     plug Potionx.Plug.RequireAuth
   end

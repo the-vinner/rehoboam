@@ -1,4 +1,3 @@
-import './App.css'
 import { defineComponent, Suspense } from 'vue'
 
 export default defineComponent({
@@ -7,9 +6,10 @@ export default defineComponent({
 
     return () => {
       return <div id="main">
-          <Suspense>
-            <router-view class="flex-1" />
-          </Suspense>
+        <div>Hello</div>
+        <Suspense>
+          <router-view class="flex-1" />
+        </Suspense>
       </div>
     }
   }

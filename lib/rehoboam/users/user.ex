@@ -6,7 +6,6 @@ defmodule Rehoboam.Users.User do
 
   schema "users" do
     field :bio, :string
-    field :customer_id, :string
     field :deleted_at, :utc_datetime
     field :email, :string
     field :name_first, :string
