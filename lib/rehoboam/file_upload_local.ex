@@ -1,6 +1,6 @@
 defmodule Rehoboam.FileUploadLocal do
-  @files_directory Application.compile_env(:rehoboam, :files_directory)
   @behaviour Rehoboam.FileUpload
+  @files_directory Application.compile_env(:rehoboam, :files_directory)
   alias Rehoboam.FileUpload
 
   @spec file_name(map()) :: String.t()
