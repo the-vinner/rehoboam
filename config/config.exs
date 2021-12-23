@@ -12,10 +12,25 @@ config :rehoboam,
 
 # Configures the endpoint
 config :rehoboam, RehoboamWeb.Endpoint,
+  cdn_url: "",
+  files_directory: "./files",
+  file_upload: Rehoboam.FileUploadLocal,
   url: [host: "localhost"],
   render_errors: [view: RehoboamWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Rehoboam.PubSub,
-  live_view: [signing_salt: "JAsi7mnW"]
+  live_view: [signing_salt: "JAsi7mnW"],
+  ssr: true,
+  use_vite_server: false
+
+config :ex_aws,
+  json_codec: Jason
+
+config :ex_aws, :s3,
+  app: "rehoboam",
+  scheme: "https://",
+  host: "",
+  region: ""
+
 
 # Configures the mailer
 #
@@ -28,16 +43,6 @@ config :rehoboam, Rehoboam.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
-
-# Configure esbuild (the version is required)
-config :esbuild,
-  version: "0.14.0",
-  default: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -13,6 +13,10 @@ config :rehoboam, Rehoboam.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
+
+config :rehoboam,
+  file_upload: Rehoboam.FileUploadMock,
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :rehoboam, RehoboamWeb.Endpoint,
@@ -28,3 +32,21 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+if System.get_env("DATABASE_URL") === nil do
+  import_config "test.secret.exs"
+end
+
+config :potionx,
+  auth: %{
+    strategies: [
+      test: [
+        strategy: Potionx.Auth.Provider.Test
+      ]
+    ]
+  }
+
+config :wallaby,
+  driver: Wallaby.Chrome,
+  otp_app: :lire,
+  screenshot_on_failure: false

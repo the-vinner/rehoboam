@@ -24,10 +24,19 @@ config :rehoboam, RehoboamWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "mUrUD6Emjj434GJpL0apbU73fmdHgwqo0JVoX5vcvIuMfp203SyjkYVeOWv3qTpw",
   watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
+config :ex_aws,
+  debug_requests: true
+
+config :potionx,
+  auth: [
+    strategies: [
+      dev: [
+        strategy: Potionx.Auth.Provider.Dev
+      ]
+    ]
+  ]
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
@@ -72,3 +81,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Finally import the config/dev.secret.exs
+import_config "dev.secret.exs"
