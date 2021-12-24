@@ -1,0 +1,53 @@
+[
+  {
+    "name": "id",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "mimeType",
+    "type": "string",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "organizationId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "title",
+    "type": "string",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "titleSafe",
+    "type": "string",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "userId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "uuid",
+    "type": "Elixir.Ecto.UUID",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  }
+]

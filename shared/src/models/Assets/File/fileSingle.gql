@@ -1,0 +1,19 @@
+query fileSingle(
+  $filters: FileFiltersSingle
+) {
+  fileSingle(
+    filters: $filters
+  ) {
+    __typename
+    id
+    insertedAt
+    mimeType
+    organizationId
+    title
+    titleSafe
+    updatedAt
+    userId
+    uuid
+    
+  }
+}

@@ -1,0 +1,19 @@
+query userPublicSingle ($filters: UserFiltersSingle) {
+  userPublicSingle(
+    filters: $filters
+  ) {
+    __typename
+    bio
+    file {
+      __typename
+      id
+      title
+      url
+    }
+    id
+    initials
+    nameFull
+    slug
+    title
+  }
+}

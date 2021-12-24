@@ -1,0 +1,35 @@
+mutation userMeMutation(
+  $changes: UserPublicInput,
+  $filters: UserFiltersSingle
+) {
+  userMeMutation(
+    changes: $changes,
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      bio
+      deletedAt
+      email
+      file {
+        __typename
+        id
+        title
+        url
+      }
+      id
+      insertedAt
+      nameFirst
+      nameLast
+      roles
+      slug
+      title
+      updatedAt
+    }
+  }
+}

@@ -17,19 +17,19 @@ defmodule RehoboamWeb.Router do
     plug :put_secure_browser_headers
     plug Potionx.Plug.ServiceContext
 
-    # plug Potionx.Plug.Auth,
-    #   session_optional: false,
-    #   session_service: Rehoboam.Sessions.SessionService
+    plug Potionx.Plug.Auth,
+      session_optional: true,
+      session_service: Rehoboam.Sessions.SessionService
   end
 
   pipeline :graphql do
     plug :accepts, ["json"]
     plug Potionx.Plug.ServiceContext
 
-    # plug Potionx.Plug.Auth,
-    #   session_optional: true,
-    #   session_service: Rehoboam.Sessions.SessionService,
-    #   user_optional: true
+    plug Potionx.Plug.Auth,
+      session_optional: true,
+      session_service: Rehoboam.Sessions.SessionService,
+      user_optional: true
 
     if Mix.env() in [:prod, :test] do
       plug Potionx.Plug.MaybeDisableIntrospection, roles: [:admin]

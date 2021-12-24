@@ -92,8 +92,7 @@ export default (args : {headers?: string[]} = {}) => {
           ) {
             const res = await sessionRenew()
             if (
-              res.data?.sessionRenew?.error &&
-              location.pathname.includes('/me')
+              res.data?.sessionRenew?.error
             ) {
               window.location.href = "/login"
               isLoggedOut.value = true

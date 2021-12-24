@@ -29,27 +29,27 @@ async function createServer(
   // use vite's connect instance as middleware
     app.use(vite.middlewares)
 
-  app.use('*', async (req, res) => {
-    try {
-      const url = req.originalUrl
-      const render = (await vite.ssrLoadModule('/src/entry-server')).render
-      const data = await render(
-        url,
-        {}, // manifest
-        {
-          "cookie": req.headers.cookie
-        }
-      )
+//   app.use('*', async (req, res) => {
+//     try {
+//       const url = req.originalUrl
+//       const render = (await vite.ssrLoadModule('/src/entry-server')).render
+//       const data = await render(
+//         url,
+//         {}, // manifest
+//         {
+//           "cookie": req.headers.cookie
+//         }
+//       )
 
-      res
-      .status(200)
-      .json(data)
-    } catch (e) {
-      vite && vite.ssrFixStacktrace(e)
-      console.log(e.stack)
-      res.status(500).end(e.stack)
-    }
-  })
+//       res
+//       .status(200)
+//       .json(data)
+//     } catch (e) {
+//       vite && vite.ssrFixStacktrace(e)
+//       console.log(e.stack)
+//       res.status(500).end(e.stack)
+//     }
+//   })
 
   return { app, vite }
 }

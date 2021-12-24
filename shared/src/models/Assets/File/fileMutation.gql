@@ -1,0 +1,28 @@
+mutation fileMutation(
+  $changes: FileInput,
+  $filters: FileFiltersSingle
+) {
+  fileMutation(
+    changes: $changes,
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      id
+      insertedAt
+      mimeType
+      organizationId
+      title
+      titleSafe
+      updatedAt
+      url
+      userId
+      uuid
+    }
+  }
+}

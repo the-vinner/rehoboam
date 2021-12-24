@@ -23,8 +23,12 @@
     "vite": "^2.7.6"
   },
   "dependencies": {
+    "@potionapps/forms": "^0.3.6",
+    "@potionapps/utils": "0.0.4",
     "@fontsource/inter": "^4.5.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@urql/core": "^2.3.6",
     "@urql/exchange-auth": "^0.1.7",
     "@urql/exchange-graphcache": "^4.3.6",

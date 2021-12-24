@@ -1,0 +1,42 @@
+query fileCollection(
+  $after: String,
+  $before: String,
+  $first: Int,
+  $last: Int,
+  $filters: FileFilters,
+  $search: String
+) {
+  fileCollection(
+    after: $after,
+    before: $before,
+    first: $first,
+    filters: $filters,
+    last: $last,
+    search: $search
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    count
+    countBefore
+    edges {
+      node {
+        __typename
+        id
+        insertedAt
+        mimeType
+        organizationId
+        title
+        titleSafe
+        updatedAt
+        userId
+        uuid
+        
+      }
+      cursor
+    }
+  }
+}

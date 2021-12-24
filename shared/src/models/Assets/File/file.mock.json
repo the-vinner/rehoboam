@@ -1,0 +1,11 @@
+{
+  "id": "some id",
+  "insertedAt": "2010-04-17T14:00:00",
+  "mimeType": "some mime_type",
+  "organizationId": "some organization_id",
+  "title": "some title",
+  "titleSafe": "some title_safe",
+  "updatedAt": "2010-04-17T14:00:00",
+  "userId": "some user_id",
+  "uuid": "7488a646-e31f-11e4-aace-600308960662"
+}

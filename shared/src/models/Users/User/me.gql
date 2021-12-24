@@ -1,0 +1,22 @@
+query me {
+  me {
+    __typename
+    bio
+    email
+    file {
+      __typename
+      id
+      title
+      url
+    }
+    id
+    internalId
+    initials
+    nameFirst
+    nameLast
+    nameFull
+    roles
+    slug
+    title
+  }
+}

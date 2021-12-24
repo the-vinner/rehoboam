@@ -1,0 +1,6 @@
+mutation signInProvider($provider: String!, $redirectUrl: String) {
+  signInProvider(provider: $provider, redirectUrl: $redirectUrl) {
+    error
+    url
+  }
+}

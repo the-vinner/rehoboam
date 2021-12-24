@@ -1,0 +1,26 @@
+mutation fileDelete(
+  $filters: FileFiltersSingle
+) {
+  fileDelete(
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      id
+insertedAt
+mimeType
+organizationId
+title
+titleSafe
+updatedAt
+userId
+uuid
+
+    }
+  }
+}

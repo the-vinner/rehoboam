@@ -1,0 +1,42 @@
+query userPublicCollection(
+  $after: String,
+  $before: String,
+  $first: Int,
+  $last: Int,
+  $filters: UserFilters,
+  $search: String
+) {
+  userPublicCollection(
+    after: $after,
+    before: $before,
+    first: $first,
+    filters: $filters,
+    last: $last,
+    search: $search
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    count
+    countBefore
+    edges {
+      node {
+        __typename
+        file {
+          __typename
+          id
+          url
+        }
+        id
+        initials
+        nameFull
+        slug
+        title
+      }
+      cursor
+    }
+  }
+}

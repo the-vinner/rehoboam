@@ -14,6 +14,8 @@ import { parse, stringify } from 'qs'
 import App from './App'
 // import routes from './routes'
 import useUrql from './useUrql';
+import routes from './routes/routes';
+import install from '@urql/vue';
 
 if (import.meta.env.PROD) {
   config.autoAddCss = false
@@ -33,7 +35,7 @@ export function createApp(args : {headers?: string[]} = {}) {
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     // @ts-ignore
     parseQuery: parse,
-    routes: [], 
+    routes, 
     scrollBehavior(to, from, savedPosition) {
       // always scroll to top
       return { top: 0 }
@@ -44,7 +46,7 @@ export function createApp(args : {headers?: string[]} = {}) {
   const app = import.meta.env.SSR || (window as any).__URQL_DATA__
     ? createSSRApp(App) 
     : createClientOnlyApp(App)
-  app.provide("$urql", client)
+  install(app, client)
   app.use(router)
 
   return { app, router, ssr }
