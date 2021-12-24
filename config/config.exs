@@ -11,7 +11,6 @@ config :rehoboam,
   ecto_repos: [Rehoboam.Repo],
   file_upload: Rehoboam.FileUploadLocal
 
-
 # Configures the endpoint
 config :rehoboam, RehoboamWeb.Endpoint,
   cdn_url: "",

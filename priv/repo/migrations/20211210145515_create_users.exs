@@ -17,6 +17,7 @@ defmodule Rehoboam.Repo.Migrations.CreateUsers do
 
     create(unique_index(:users, [:email]))
     create(unique_index(:users, [:slug]))
+
     execute(
       "CREATE INDEX users_full_name_idx on users ((name_first || ' ' || name_last))",
       "DROP INDEX users_full_name_idx"

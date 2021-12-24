@@ -117,6 +117,7 @@ defmodule Rehoboam.Users.User do
   def sanitize_bio(%{changes: %{bio: c}} = cs) when not is_nil(c) do
     put_change(cs, :bio, HtmlSanitizeEx.html5(c))
   end
+
   def sanitize_bio(cs), do: cs
 
   def title(entry) do

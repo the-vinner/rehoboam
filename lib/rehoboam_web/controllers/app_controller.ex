@@ -1,6 +1,6 @@
 defmodule RehoboamWeb.AppController do
   use RehoboamWeb, :controller
-  @ssr Application.get_env(:rehoboam, RehoboamWeb.Endpoint)[:ssr]
+  @ssr Application.compile_env(:rehoboam, RehoboamWeb.Endpoint)[:ssr]
 
   def add_default_meta(conn) do
     conn
@@ -24,7 +24,8 @@ defmodule RehoboamWeb.AppController do
     use_ssr = if Map.has_key?(conn.private, :use_ssr), do: conn.private[:use_ssr], else: @ssr
 
     cond do
-      use_ssr === true and not Application.get_env(:rehoboam, RehoboamWeb.Endpoint)[:use_vite_server] ->
+      use_ssr === true and
+          not Application.get_env(:rehoboam, RehoboamWeb.Endpoint)[:use_vite_server] ->
         NodeJS.call(
           "ssr",
           [
@@ -49,8 +50,6 @@ defmodule RehoboamWeb.AppController do
             )
 
           {:error, msg} ->
-            IO.inspect(msg, label: "log")
-
             conn
             |> send_resp(500, "Error")
         end
@@ -87,8 +86,6 @@ defmodule RehoboamWeb.AppController do
             )
 
           err ->
-            IO.inspect(err)
-
             conn
             |> send_resp(500, "Error")
         end

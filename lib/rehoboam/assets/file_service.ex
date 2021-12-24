@@ -57,7 +57,7 @@ defmodule Rehoboam.Assets.FileService do
       |> case do
         {:ok, res} -> [to_string(res), "image/#{to_string(res)}"]
         {:error, _} -> ["unknown", "unknown"]
-    end
+      end
 
     name = String.split(file_url, "/") |> Enum.at(-1)
     name = String.split(name, ".") |> Enum.at(0)

@@ -65,7 +65,9 @@ defmodule RehoboamGraphQl.Schema.UserTypes do
     field :roles, list_of(:string)
     field :slug, :string
 
-    field :title, :string, resolve: Potionx.Resolvers.resolve_computed(Rehoboam.Users.User, :title)
+    field :title, :string,
+      resolve: Potionx.Resolvers.resolve_computed(Rehoboam.Users.User, :title)
+
     field :updated_at, :naive_datetime, resolve: handle_string_date(:updated_at, :naive)
 
     field :user_identities, list_of(:user_identity),
@@ -111,7 +113,9 @@ defmodule RehoboamGraphQl.Schema.UserTypes do
 
     field :name_last, :string
     field :slug, :string
-    field :title, :string, resolve: Potionx.Resolvers.resolve_computed(Rehoboam.Users.User, :title)
+
+    field :title, :string,
+      resolve: Potionx.Resolvers.resolve_computed(Rehoboam.Users.User, :title)
   end
 
   connection node_type: :user do
@@ -172,5 +176,4 @@ defmodule RehoboamGraphQl.Schema.UserTypes do
     field :node, :user
     field :success_msg, :string
   end
-
 end

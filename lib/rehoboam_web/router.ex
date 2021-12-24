@@ -46,6 +46,7 @@ defmodule RehoboamWeb.Router do
   pipeline :require_auth do
     plug Potionx.Plug.RequireAuth
   end
+
   pipeline :require_unauth do
     plug Potionx.Plug.RequireUnauth
   end
@@ -59,7 +60,6 @@ defmodule RehoboamWeb.Router do
       session_service: Rehoboam.Sessions.SessionService,
       user_optional: true
   end
-
 
   # Enables LiveDashboard only for development
   #
@@ -88,7 +88,6 @@ defmodule RehoboamWeb.Router do
       schema: RehoboamGraphQl.Schema
   end
 
-
   scope "/api/v1", as: :api_v1 do
     pipe_through :auth_callback
 
@@ -112,11 +111,11 @@ defmodule RehoboamWeb.Router do
     pipe_through [:browser, :require_auth]
     get "/*path", AppController, :index
   end
+
   # Other scopes may use custom stacks.
   # scope "/api", RehoboamWeb do
   #   pipe_through :api
   # end
-
 
   # Enables the Swoosh mailbox preview in development.
   #

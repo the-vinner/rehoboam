@@ -3,7 +3,10 @@ defmodule RehoboamGraphQl.Schema.AuthMutations do
 
   object :auth_mutations do
     field :session_renew, type: :sign_in_provider_result do
-      resolve(Potionx.Auth.Resolvers.resolve_renew(session_service: Rehoboam.Sessions.SessionService))
+      resolve(
+        Potionx.Auth.Resolvers.resolve_renew(session_service: Rehoboam.Sessions.SessionService)
+      )
+
       middleware(&Potionx.Auth.Resolvers.middleware_renew/2)
     end
 

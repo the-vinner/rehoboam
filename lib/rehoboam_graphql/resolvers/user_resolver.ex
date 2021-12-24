@@ -98,5 +98,4 @@ defmodule RehoboamGraphQl.Resolver.User do
   def one(_, %{context: %Service{} = ctx}) do
     {:ok, UserService.one(ctx)}
   end
-
 end

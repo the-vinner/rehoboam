@@ -108,11 +108,9 @@ defmodule Rehoboam.Users.UserService do
     one(ctx)
     |> case do
       nil ->
-        mutation(
-          %Service{
-            changes: ctx.changes
-          }
-        )
+        mutation(%Service{
+          changes: ctx.changes
+        })
 
       user ->
         user
