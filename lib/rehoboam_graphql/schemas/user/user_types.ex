@@ -30,7 +30,7 @@ defmodule RehoboamGraphQl.Schema.UserTypes do
     field :initials, :string do
       resolve(fn
         %{name_first: "", name_last: ""} = el, _, _ ->
-          {:ok, String.slice(el.email, 0..3)}
+          {:ok, String.slice(el.email, 0..2)}
 
         %{name_first: f, name_last: l} = el, _, _ when not is_nil(f) and not is_nil(l) ->
           {
@@ -39,7 +39,7 @@ defmodule RehoboamGraphQl.Schema.UserTypes do
           }
 
         el, _, _ ->
-          {:ok, String.slice(el.email, 0..3)}
+          {:ok, String.slice(el.email, 0..2)}
       end)
     end
 

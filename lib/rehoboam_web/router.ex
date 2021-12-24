@@ -109,7 +109,7 @@ defmodule RehoboamWeb.Router do
   end
 
   scope "/", RehoboamWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :require_auth]
     get "/*path", AppController, :index
   end
   # Other scopes may use custom stacks.
