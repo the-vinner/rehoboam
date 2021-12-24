@@ -23,6 +23,6 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemaFieldsTable do
       timestamps()
     end
 
-    create index("record_schema_fields", [:handle, :record_schema_id], unique: true)
+    create index("schema_fields", [:handle, :schema_id], unique: true)
   end
 end
