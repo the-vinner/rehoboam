@@ -1,0 +1,44 @@
+mutation schemaMutation(
+  $changes: SchemaInput,
+  $filters: SchemaFiltersSingle
+) {
+  schemaMutation(
+    changes: $changes,
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      internalId
+      deletedAt
+      descriptionI18n
+      enableDescription
+      enableEndAt
+      enableFile
+      enableImage
+      enableLocation
+      enablePrice
+      enablePriceCompareAt
+      enableStartAt
+      enableThumbnail
+      enableTitle
+      fileId
+      handle
+      id
+      insertedAt
+      isLatest
+      private
+      publishedAt
+      schemaId
+      slug
+      titleI18n
+      updatedAt
+      userId
+      
+    }
+  }
+}

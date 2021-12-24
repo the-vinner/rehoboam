@@ -1,0 +1,116 @@
+[
+  {
+    "name": "deletedAt",
+    "type": "utcDatetime",
+    "validations": []
+  },
+  {
+    "name": "descriptionI18n",
+    "type": "map",
+    "validations": []
+  },
+  {
+    "name": "enableDescription",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableEndAt",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableFile",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableImage",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableLocation",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enablePrice",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enablePriceCompareAt",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableStartAt",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableThumbnail",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "enableTitle",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "fileId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "handle",
+    "type": "string",
+    "validations": []
+  },
+  {
+    "name": "id",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "isLatest",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "private",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "publishedAt",
+    "type": "utcDatetime",
+    "validations": []
+  },
+  {
+    "name": "schemaId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "slug",
+    "type": "string",
+    "validations": []
+  },
+  {
+    "name": "titleI18n",
+    "type": "map",
+    "validations": []
+  },
+  {
+    "name": "userId",
+    "type": "id",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  }
+]

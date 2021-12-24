@@ -33,6 +33,33 @@ defmodule Rehoboam.DataCase do
     :ok
   end
 
+  def create_user(email \\ "test@example.local") do
+    Rehoboam.Users.UserService.mutation(%Potionx.Context.Service{
+      changes: %{
+        email: email,
+        roles: [:admin],
+        slug: "slug"
+      }
+    })
+    |> (fn {:ok, %{user: user}} ->
+          user
+        end).()
+  end
+
+  def prepare_ctx(ctx) do
+    user = create_user()
+
+    %{
+      ctx
+      | roles: [:admin],
+        session: %{
+          id: 1,
+          user: user
+        },
+        user: user
+    }
+  end
+
   @doc """
   A helper that transforms changeset errors into a map of messages.
 

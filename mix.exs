@@ -64,7 +64,8 @@ defmodule Rehoboam.MixProject do
       {:tesla, "~> 1.4"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:wallaby, "~> 0.29.0", runtime: false, only: :test}
     ]
   end
 
