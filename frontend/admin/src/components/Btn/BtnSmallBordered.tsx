@@ -10,17 +10,20 @@ export default defineComponent({
         <Btn 
           class={
             [
-                "bg-gray-200",
-                "focus:bg-gray-300",
-                "hover:bg-gray-300",
+                "border-1",
+                "border-slate-300",
+                "focus:bg-slate-100",
+                "hover:bg-gray-100",
+                "hover:border-slate-400",
                 "font-semibold",
                 "p-2",
                 "s550:px-3",
                 "rounded",
+                "shadow-sm",
                 "text-xs",
-                "text-gray-700",
-                "focus:text-gray-900",
-                "hover:text-gray-900"
+                "text-slate-700",
+                "focus:text-slate-900",
+                "hover:text-slate-900"
             ]
           }
           {...props}

@@ -23,7 +23,9 @@ defmodule Rehoboam.Schemas.Schema do
     field :title_i18n, :map
 
     belongs_to(:file, Rehoboam.Assets.File)
+    belongs_to(:image, Rehoboam.Assets.File)
     belongs_to(:schema, Rehoboam.Schemas.Schema)
+    belongs_to(:thumbnail, Rehoboam.Assets.File)
     belongs_to(:user, Rehoboam.Users.User)
     timestamps()
   end
@@ -55,7 +57,9 @@ defmodule Rehoboam.Schemas.Schema do
     struct
     |> cast(params, @allowed_fields)
     |> assoc_constraint(:file)
+    |> assoc_constraint(:image)
     |> assoc_constraint(:schema)
+    |> assoc_constraint(:thumbnail)
     |> assoc_constraint(:user)
     |> validate_required(@required_fields)
   end

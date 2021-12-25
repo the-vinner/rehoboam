@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "BtnIcon",
   props: btnProps,
-  setup (props: BtnProps) {
+  setup (props) {
     return () => { 
       return (
       <Btn 

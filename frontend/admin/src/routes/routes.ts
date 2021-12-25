@@ -1,16 +1,13 @@
 import { routeNames } from './routeNames'
 import { RouteRecordRaw } from 'vue-router'
-import RouteError from './RouteError/RouteError'
-import RouteHome from './RouteHome/RouteHome'
+import RouteContent from './RouteContent/RouteContent'
 import RouteLogin from './RouteLogin/RouteLogin'
-import RouteLoginError from './RouteLoginError/RouteLoginError'
-
 
 const routes : RouteRecordRaw[] = [
   {
-    name: routeNames.home,
+    name: routeNames.content,
     path: '/',
-    component: RouteHome
+    component: RouteContent
   },
   {
     name: routeNames.login,
@@ -20,12 +17,17 @@ const routes : RouteRecordRaw[] = [
   {
     name: routeNames.loginError,
     path: '/login/error',
-    component: RouteLoginError
+    component: () => import('./RouteLoginError/RouteLoginError')
+  },
+  {
+    name: routeNames.schema,
+    path: '/schemas/:id',
+    component: () => import('./RouteSchema/RouteSchema')
   },
   {
     name: routeNames.error,
     path: '/:pathMatch(.*)*',
-    component: RouteError
+    component: () => import('./RouteError/RouteError')
   }
 ]
 export default routes
