@@ -12,20 +12,23 @@ defmodule RehoboamGraphQl.Resolver.Schema do
     |> Absinthe.Relay.Connection.from_query(
       &Rehoboam.Repo.all/1,
       ensure_first_page_is_full(args),
-      [count: count]
+      count: count
     )
     |> case do
       {:ok, result} ->
         {
           :ok,
           Map.merge(
-            result, %{
+            result,
+            %{
               count: count,
               count_before: count_before
             }
           )
         }
-      err -> err
+
+      err ->
+        err
     end
   end
 
@@ -65,13 +68,16 @@ defmodule RehoboamGraphQl.Resolver.Schema do
       not is_nil(ctx.pagination.after) ->
         Absinthe.Relay.Connection.cursor_to_offset(ctx.pagination.after)
         |> elem(1)
+
       not is_nil(ctx.pagination.before) ->
         Absinthe.Relay.Connection.cursor_to_offset(ctx.pagination.before)
         |> elem(1)
         |> Kernel.-(ctx.pagination.last)
         |> max(0)
+
       not is_nil(ctx.pagination.last) ->
         count - ctx.pagination.last
+
       true ->
         0
     end

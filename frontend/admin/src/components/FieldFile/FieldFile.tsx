@@ -1,7 +1,7 @@
 import { computed, defineComponent, ref, PropType, onMounted, onBeforeUnmount, watch, popScopeId } from "vue";
 import { faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { File as LireFile } from "shared/types";
+import { File as RehoboamFile } from "shared/types";
 import { FontAwesomeIcon } from "@potionapps/utils";
 import { useField } from "@potionapps/forms";
 import BtnSecondary from "components/Btn/BtnSecondary";
@@ -9,8 +9,8 @@ import FieldError from "../FieldError/FieldError";
 import FieldFileChosen from "./FieldFileChosen";
 import FieldLabel from "../FieldLabel/FieldLabel";
 
-type Value = null | File | LireFile
-type ValueMultiple = (LireFile | File)[]
+type Value = null | File | RehoboamFile
+type ValueMultiple = (RehoboamFile | File)[]
 
 export default defineComponent({
   name: "FieldFile",
@@ -52,12 +52,12 @@ export default defineComponent({
     }
     const clearOne = (e: Event, i: number) => {
       e.stopPropagation()
-      if (!props.multiple || (internalValue.value as (File | LireFile)[]).length === 1) {
+      if (!props.multiple || (internalValue.value as (File | RehoboamFile)[]).length === 1) {
         clear()
       } else {
         change?.(
           props.name,
-          (internalValue.value as (File | LireFile)[])?.slice(0).splice(i, 1)
+          (internalValue.value as (File | RehoboamFile)[])?.slice(0).splice(i, 1)
         )
       }
     }
@@ -71,7 +71,7 @@ export default defineComponent({
     }
 
     const icon = computed(() => {
-      const type = ((internalValue.value as LireFile)?.mimeType || '').split('/').pop()
+      const type = ((internalValue.value as RehoboamFile)?.mimeType || '').split('/').pop()
       return type && props.fileIcons?.[type] || defaultIcon
     })
 
@@ -129,15 +129,15 @@ export default defineComponent({
     const previews = computed<string[]>(() => {
       if (!internalValue.value) return []
       return props.multiple
-        ? (internalValue.value as ValueMultiple)?.map((v: File | LireFile) => {
+        ? (internalValue.value as ValueMultiple)?.map((v: File | RehoboamFile) => {
           return generatePreviewUrl(v)
         })
         : [generatePreviewUrl(internalValue.value as Value)]
     })
 
     const generatePreviewUrl = (v: Value) : string => {
-      if ((v as LireFile)?.id) {
-        return (v as LireFile).url!
+      if ((v as RehoboamFile)?.id) {
+        return (v as RehoboamFile).url!
       } else if ((v as File)?.name) {
         return URL.createObjectURL(v)
       }

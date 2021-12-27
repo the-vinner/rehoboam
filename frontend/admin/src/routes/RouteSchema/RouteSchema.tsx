@@ -1,32 +1,71 @@
+import { computed, defineComponent, ref } from "vue";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { routeNames } from "../routeNames";
 import { useForm } from "@potionapps/forms";
-import _default from "@potionapps/forms/dist/fields/FieldCheckbox/useFieldCheckbox";
+import { useRoute, useRouter } from "vue-router";
 import BtnIcon from "components/Btn/BtnIcon";
 import BtnSubmit from "components/Btn/BtnSubmit";
-import FieldFile from "components/FieldFile/FieldFile";
 import FieldInput from "components/FieldInput/FieldInput";
-import FieldSwitchSmall from "components/FieldSwitch/FieldSwitchSmall";
 import FieldTextarea from "components/FieldTextarea/FieldTextarea";
+import schemaMutation from "shared/models/Schemas/Schema/schemaMutation.gql";
 import Title from "components/Title/Title";
-import TitleSidebar from "components/Title/TitleSidebar";
-import Sidebar from "root/layout/Sidebar/Sidebar";
 import Wrapper from "root/layout/Wrapper/Wrapper";
-import { computed, defineComponent } from "vue";
-import { routeNames } from "../routeNames";
+import {
+  RootMutationType,
+  RootMutationTypeSchemaMutationArgs,
+} from "shared/types";
+import { useMutation } from "@urql/vue";
+import useSchemaSingle from "hooks/useSchemaSingle";
+import RouteSchemaFields from "./RouteSchemaFields";
 
 export default defineComponent({
   setup() {
-    const { consolidated } = useForm({
+    const serverError = ref("");
+    const route = useRoute();
+    const router = useRouter();
+    const { executeMutation } = useMutation<RootMutationType>(schemaMutation);
+
+    const { isNew, schema } = useSchemaSingle("cache-and-network");
+
+    const form = useForm({
       data: computed(() => {
-        return {
-          enableDescription: true,
-          enableImage: true,
-          enableTitle: true,
-        };
+        if (isNew.value) {
+          return {
+            enableDescription: true,
+            enableImage: true,
+            enableTitle: true,
+          };
+        }
+        return schema.value;
       }),
       fields: [],
-      onSubmit: () => {
-        return Promise.resolve(true);
+      onSubmit: (cs) => {
+        serverError.value = "";
+        const params: RootMutationTypeSchemaMutationArgs = {
+          changes: {
+            ...cs.changes,
+          },
+        };
+        if (!isNew.value) params.filters = { id: route.params.id };
+        return executeMutation(params).then((res) => {
+          if (res.error || res.data?.schemaMutation?.errorsFields?.length) {
+            if (res.data?.schemaMutation?.errorsFields?.length) {
+              res.data?.schemaMutation?.errorsFields.forEach((err) => {
+                form.setServerError(err?.field, err?.message);
+              });
+            }
+            if (res.error) serverError.value = res.error.message;
+            return false;
+          } else {
+            router.push({
+              name: routeNames.schema,
+              params: {
+                id: res.data?.schemaMutation?.node?.internalId,
+              },
+            });
+            return false;
+          }
+        });
       },
     });
 
@@ -69,61 +108,44 @@ export default defineComponent({
             </div>
           </Wrapper>
           <div class={["flex", "grow"]}>
-            <Wrapper
-              class={[
-                "flex",
-                "flex-col",
-                "gap-4",
-                "max-w-screen",
-                "pt-6",
-                "w-[600px]",
-              ]}
-            >
-              {consolidated.value.enableTitle && (
-                <FieldInput
-                  inputClasses={["text-2xl"]}
-                  name="title"
-                  placeholder="Content Type Title..."
-                />
-              )}
-              {consolidated.value.enableTitle && (
+            <Wrapper class={["max-w-screen", "mx-auto", "pt-6", "w-[600px]"]}>
+              <form
+                class={["flex", "flex-col", "gap-4"]}
+                onSubmit={form.submit}
+              >
+                <div>
+                  <FieldInput
+                    inputClasses={["text-2xl"]}
+                    name="title"
+                    placeholder="Content Type Title..."
+                  />
+                </div>
                 <FieldTextarea
                   name="description"
                   placeholder="Description..."
                 />
-              )}
-              <div>
-                <TitleSidebar class="mb-3">Options</TitleSidebar>
-                <div class={["flex", "flex-col", "gap-3"]}>
-                  <FieldSwitchSmall label="Enable Title" name="enableTitle" />
-                  <FieldSwitchSmall
-                    label="Enable Description"
-                    name="enableDescription"
-                  />
-                  <FieldSwitchSmall label="Enable Image" name="enableImage" />
-                  <FieldSwitchSmall
-                    label="Enable Thumbnail"
-                    name="enableThumbnail"
-                  />
-                </div>
-              </div>
-              <div>
-                <FieldInput
-                  label="Handle"
-                  name="handle"
-                  placeholder="Handle..."
-                />
-              </div>
-              <footer class={["sticky", "bottom-2"]}>
-                <BtnSubmit class="w-full" />
-              </footer>
+                {!isNew.value && (
+                  <div>
+                    <FieldInput
+                      disabled={true}
+                      label="Handle"
+                      name="handle"
+                      placeholder="Handle..."
+                    />
+                  </div>
+                )}
+                <footer class={["sticky", "bottom-2"]}>
+                  <BtnSubmit class="w-full" />
+                </footer>
+              </form>
             </Wrapper>
-            <Wrapper class={["border-l-1", "border-slate-300", 'grow', "pt-4"]}>
-              <Title class="mb-3">Fields</Title>
-              <div class={['border-slate-300', 'border-1', 'py-8', 'rounded-xl', 'shadow-sm', 'w-full']}>
-
-              </div>
-            </Wrapper>
+            {route.params.id !== "0" && (
+              <Wrapper
+                class={["border-l-1", "border-slate-300", "grow", "pt-4"]}
+              >
+                <RouteSchemaFields />
+              </Wrapper>
+            )}
           </div>
         </div>
       );

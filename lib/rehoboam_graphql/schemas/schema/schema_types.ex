@@ -3,9 +3,9 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
   use Absinthe.Relay.Schema.Notation, :modern
   import Absinthe.Resolution.Helpers
 
-  node object :schema do
+  node object(:schema) do
     field :deleted_at, :datetime
-    field :description_i18n, :json
+    field :description, :string
     field :enable_description, :boolean
     field :enable_end_at, :boolean
     field :enable_file, :boolean
@@ -27,20 +27,23 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :schema, :schema, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :schema_id, :id
     field :slug, :string
-    field :title_i18n, :json
+    field :title, :string
     field :updated_at, :naive_datetime
     field :user, :user, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :user_id, :id
   end
+
   connection node_type: :schema do
     field :count, non_null(:integer)
     field :count_before, non_null(:integer)
+
     edge do
     end
   end
+
   input_object :schema_filters do
     field :deleted_at, :datetime
-    field :description_i18n, :json
+    field :description, :string
     field :enable_description, :boolean
     field :enable_end_at, :boolean
     field :enable_file, :boolean
@@ -59,13 +62,14 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :published_at, :datetime
     field :schema_id, :global_id
     field :slug, :string
-    field :title_i18n, :json
+    field :title, :string
     field :updated_at, :naive_datetime
     field :user_id, :global_id
   end
+
   input_object :schema_input do
     field :deleted_at, :datetime
-    field :description_i18n, :json
+    field :description, :string
     field :enable_description, :boolean
     field :enable_end_at, :boolean
     field :enable_file, :boolean
@@ -84,13 +88,15 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :published_at, :datetime
     field :schema_id, :global_id
     field :slug, :string
-    field :title_i18n, :json
+    field :title, :string
     field :updated_at, :naive_datetime
     field :user_id, :global_id
   end
+
   input_object :schema_filters_single do
     field :id, non_null(:global_id)
   end
+
   object :schema_mutation_result do
     field :errors, list_of(:string)
     field :errors_fields, list_of(:error)

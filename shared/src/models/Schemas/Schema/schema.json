@@ -5,7 +5,7 @@
     "validations": []
   },
   {
-    "name": "descriptionI18n",
+    "name": "description",
     "type": "map",
     "validations": []
   },
@@ -100,7 +100,7 @@
     "validations": []
   },
   {
-    "name": "titleI18n",
+    "name": "title",
     "type": "map",
     "validations": []
   },

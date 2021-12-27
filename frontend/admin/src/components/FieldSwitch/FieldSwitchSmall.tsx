@@ -1,6 +1,5 @@
 import { computed, defineComponent } from "vue";
 import { useField } from "@potionapps/forms";
-import FieldLabel from "components/FieldLabel/FieldLabel";
 import FieldError from "components/FieldError/FieldError";
 
 export type FieldCheckboxOptionProps = {
@@ -55,7 +54,7 @@ export default defineComponent({
       return <div class={['flex', 'gap-2', 'items-center']}>
         <button
           class={[
-            internalValue.value ? 'bg-green-500' : 'bg-gray-600',
+            internalValue.value ? 'bg-emerald-500' : 'bg-gray-600',
             "relative", "inline-flex", "flex-shrink-0", "h-[20px]", "w-[40px]", "border-2", "border-transparent",
             "rounded-full", "cursor-pointer", "transition-colors",
             "ease-in-out", "duration-200", "focus:outline-none", "focus-visible:ring-2",

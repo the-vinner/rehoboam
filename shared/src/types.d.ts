@@ -18,6 +18,12 @@ export type Scalars = {
   DateTime: any;
   GlobalId: any;
   /**
+   * The `Json` scalar type represents arbitrary json string data, represented as UTF-8
+   * character sequences. The Json type is most often used to represent a free-form
+   * human-readable json string.
+   */
+  Json: any;
+  /**
    * The `Naive DateTime` scalar type represents a naive date and time without
    * timezone. The DateTime appears in a JSON response as an ISO8601 formatted
    * string.
@@ -101,6 +107,7 @@ export type FileMutationResult = {
 
 
 
+
 export type Node = {
   /** The ID of the object. */
   id: Scalars['ID'];
@@ -122,6 +129,8 @@ export type RootMutationType = {
   __typename?: 'RootMutationType';
   fileDelete?: Maybe<FileMutationResult>;
   fileMutation?: Maybe<FileMutationResult>;
+  schemaDelete?: Maybe<SchemaMutationResult>;
+  schemaMutation?: Maybe<SchemaMutationResult>;
   sessionRenew?: Maybe<SignInProviderResult>;
   signInProvider?: Maybe<SignInProviderResult>;
   signOut?: Maybe<SignInProviderResult>;
@@ -139,6 +148,17 @@ export type RootMutationTypeFileDeleteArgs = {
 export type RootMutationTypeFileMutationArgs = {
   changes?: Maybe<FileInput>;
   filters?: Maybe<FileFiltersSingle>;
+};
+
+
+export type RootMutationTypeSchemaDeleteArgs = {
+  filters?: Maybe<SchemaFiltersSingle>;
+};
+
+
+export type RootMutationTypeSchemaMutationArgs = {
+  changes?: Maybe<SchemaInput>;
+  filters?: Maybe<SchemaFiltersSingle>;
 };
 
 
@@ -169,6 +189,8 @@ export type RootQueryType = {
   fileCollection?: Maybe<FileConnection>;
   fileSingle?: Maybe<File>;
   me?: Maybe<User>;
+  schemaCollection?: Maybe<SchemaConnection>;
+  schemaSingle?: Maybe<Schema>;
   userCollection?: Maybe<UserConnection>;
   userPublicCollection?: Maybe<UserPublicConnection>;
   userPublicSingle?: Maybe<UserPublic>;
@@ -189,6 +211,22 @@ export type RootQueryTypeFileCollectionArgs = {
 
 export type RootQueryTypeFileSingleArgs = {
   filters?: Maybe<FileFiltersSingle>;
+};
+
+
+export type RootQueryTypeSchemaCollectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  filters?: Maybe<SchemaFilters>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  order?: Maybe<SortOrder>;
+  search?: Maybe<Scalars['String']>;
+};
+
+
+export type RootQueryTypeSchemaSingleArgs = {
+  filters?: Maybe<SchemaFiltersSingle>;
 };
 
 
@@ -221,6 +259,117 @@ export type RootQueryTypeUserPublicSingleArgs = {
 
 export type RootQueryTypeUserSingleArgs = {
   filters?: Maybe<UserFiltersSingle>;
+};
+
+export type Schema = Node & {
+  __typename?: 'Schema';
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['Json']>;
+  enableDescription?: Maybe<Scalars['Boolean']>;
+  enableEndAt?: Maybe<Scalars['Boolean']>;
+  enableFile?: Maybe<Scalars['Boolean']>;
+  enableImage?: Maybe<Scalars['Boolean']>;
+  enableLocation?: Maybe<Scalars['Boolean']>;
+  enablePrice?: Maybe<Scalars['Boolean']>;
+  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
+  enableStartAt?: Maybe<Scalars['Boolean']>;
+  enableThumbnail?: Maybe<Scalars['Boolean']>;
+  enableTitle?: Maybe<Scalars['Boolean']>;
+  file?: Maybe<File>;
+  fileId?: Maybe<Scalars['ID']>;
+  handle?: Maybe<Scalars['String']>;
+  /** The ID of an object */
+  id: Scalars['ID'];
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  internalId?: Maybe<Scalars['ID']>;
+  isLatest?: Maybe<Scalars['Boolean']>;
+  private?: Maybe<Scalars['Boolean']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  schema?: Maybe<Schema>;
+  schemaId?: Maybe<Scalars['ID']>;
+  slug?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['Json']>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['ID']>;
+};
+
+export type SchemaConnection = {
+  __typename?: 'SchemaConnection';
+  count: Scalars['Int'];
+  countBefore: Scalars['Int'];
+  edges?: Maybe<Array<Maybe<SchemaEdge>>>;
+  pageInfo: PageInfo;
+};
+
+export type SchemaEdge = {
+  __typename?: 'SchemaEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Schema>;
+};
+
+export type SchemaFilters = {
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['Json']>;
+  enableDescription?: Maybe<Scalars['Boolean']>;
+  enableEndAt?: Maybe<Scalars['Boolean']>;
+  enableFile?: Maybe<Scalars['Boolean']>;
+  enableImage?: Maybe<Scalars['Boolean']>;
+  enableLocation?: Maybe<Scalars['Boolean']>;
+  enablePrice?: Maybe<Scalars['Boolean']>;
+  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
+  enableStartAt?: Maybe<Scalars['Boolean']>;
+  enableThumbnail?: Maybe<Scalars['Boolean']>;
+  enableTitle?: Maybe<Scalars['Boolean']>;
+  fileId?: Maybe<Scalars['GlobalId']>;
+  handle?: Maybe<Scalars['String']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  isLatest?: Maybe<Scalars['Boolean']>;
+  private?: Maybe<Scalars['Boolean']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  schemaId?: Maybe<Scalars['GlobalId']>;
+  slug?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['Json']>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  userId?: Maybe<Scalars['GlobalId']>;
+};
+
+export type SchemaFiltersSingle = {
+  id: Scalars['GlobalId'];
+};
+
+export type SchemaInput = {
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['Json']>;
+  enableDescription?: Maybe<Scalars['Boolean']>;
+  enableEndAt?: Maybe<Scalars['Boolean']>;
+  enableFile?: Maybe<Scalars['Boolean']>;
+  enableImage?: Maybe<Scalars['Boolean']>;
+  enableLocation?: Maybe<Scalars['Boolean']>;
+  enablePrice?: Maybe<Scalars['Boolean']>;
+  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
+  enableStartAt?: Maybe<Scalars['Boolean']>;
+  enableThumbnail?: Maybe<Scalars['Boolean']>;
+  enableTitle?: Maybe<Scalars['Boolean']>;
+  fileId?: Maybe<Scalars['GlobalId']>;
+  handle?: Maybe<Scalars['String']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  isLatest?: Maybe<Scalars['Boolean']>;
+  private?: Maybe<Scalars['Boolean']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  schemaId?: Maybe<Scalars['GlobalId']>;
+  slug?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['Json']>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  userId?: Maybe<Scalars['GlobalId']>;
+};
+
+export type SchemaMutationResult = {
+  __typename?: 'SchemaMutationResult';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  errorsFields?: Maybe<Array<Maybe<Error>>>;
+  node?: Maybe<Schema>;
+  successMsg?: Maybe<Scalars['String']>;
 };
 
 export type SignInProviderResult = {

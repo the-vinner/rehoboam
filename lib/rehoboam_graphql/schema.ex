@@ -5,6 +5,7 @@ defmodule RehoboamGraphQl.Schema do
     resolve_type(fn
       %Rehoboam.Schemas.Schema{}, _ ->
         :schema
+
       %Rehoboam.Assets.File{}, _ ->
         :file
 
@@ -27,7 +28,10 @@ defmodule RehoboamGraphQl.Schema do
     Dataloader.new()
     |> Dataloader.add_source(RehoboamGraphQl.Resolver.User, RehoboamGraphQl.Resolver.User.data())
     |> Dataloader.add_source(RehoboamGraphQl.Resolver.File, RehoboamGraphQl.Resolver.File.data())
-    |> Dataloader.add_source(RehoboamGraphQl.Resolver.Schema, RehoboamGraphQl.Resolver.Schema.data())
+    |> Dataloader.add_source(
+      RehoboamGraphQl.Resolver.Schema,
+      RehoboamGraphQl.Resolver.Schema.data()
+    )
   end
 
   def get_key(%{source: source} = res, key) do
@@ -84,14 +88,14 @@ defmodule RehoboamGraphQl.Schema do
   query do
     import_fields(:user_queries)
     import_fields(:file_queries)
-    import_fields :schema_queries
+    import_fields(:schema_queries)
   end
 
   mutation do
     import_fields(:user_mutations)
     import_fields(:auth_mutations)
     import_fields(:file_mutations)
-    import_fields :schema_mutations
+    import_fields(:schema_mutations)
   end
 
   interface :rehoboam_mutation do
@@ -108,7 +112,7 @@ defmodule RehoboamGraphQl.Schema do
   import_types(RehoboamGraphQl.Schema.FileMutations)
   import_types(RehoboamGraphQl.Schema.FileQueries)
   import_types(RehoboamGraphQl.Schema.FileTypes)
-  import_types RehoboamGraphQl.Schema.SchemaMutations
-  import_types RehoboamGraphQl.Schema.SchemaQueries
-  import_types RehoboamGraphQl.Schema.SchemaTypes
+  import_types(RehoboamGraphQl.Schema.SchemaMutations)
+  import_types(RehoboamGraphQl.Schema.SchemaQueries)
+  import_types(RehoboamGraphQl.Schema.SchemaTypes)
 end

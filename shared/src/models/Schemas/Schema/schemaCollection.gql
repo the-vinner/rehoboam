@@ -27,7 +27,7 @@ query schemaCollection(
         __typename
         internalId
         deletedAt
-        descriptionI18n
+        description
         enableDescription
         enableEndAt
         enableFile
@@ -47,7 +47,7 @@ query schemaCollection(
         publishedAt
         schemaId
         slug
-        titleI18n
+        title
         updatedAt
         userId
         
