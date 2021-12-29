@@ -5,18 +5,6 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemasTable do
     create table(:schemas) do
       add(:deleted_at, :utc_datetime)
       add :description, :string
-      add :enable_description, :boolean, default: true
-      add :enable_end_at, :boolean, default: false
-      add :enable_file, :boolean, default: true
-      add :enable_image, :boolean, default: true
-      add :enable_link, :boolean, default: false
-      add :enable_location, :boolean, default: false
-      add :enable_price_compare_at, :boolean, default: false
-      add :enable_price, :boolean, default: false
-      add :enable_relationship, :boolean, default: false
-      add :enable_start_at, :boolean, default: false
-      add :enable_thumbnail, :boolean, default: false
-      add :enable_title, :boolean, default: true
       add :icon_id, references(:files, on_delete: :nilify_all)
       add :image_id, references(:files, on_delete: :nilify_all)
       add :handle, :string

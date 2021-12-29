@@ -16,15 +16,15 @@ defmodule Rehoboam.Release do
   def seed_locales(repo) do
     [
       %Locale{
-        locale: "en",
+        locale: "en-US",
         title: "English"
       },
       %Locale{
-        locale: "es",
+        locale: "es-ES",
         title: "Español"
       },
       %Locale{
-        locale: "fr",
+        locale: "fr-FR",
         title: "Français"
       }
     ]
@@ -66,6 +66,7 @@ defmodule Rehoboam.Release do
 
   def seed(repo) do
     email = Application.fetch_env!(@app, :root_user_email)
+    Rehoboam.Schemas.SchemaFieldDefaults.seed(repo)
 
     if email do
       repo.get_by(User, email: email)
