@@ -51,6 +51,7 @@ defmodule Rehoboam.Release do
         Ecto.Migrator.with_repo(repo, fn repo ->
           seed_locales(repo)
           seed(repo)
+          Rehoboam.Schemas.SchemaFieldDefaults.seed(repo)
         end)
     end
   end

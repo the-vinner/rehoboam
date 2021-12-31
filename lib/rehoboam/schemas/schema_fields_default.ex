@@ -70,8 +70,11 @@ defmodule Rehoboam.Schemas.SchemaFieldDefaults do
       repo.get_by(SchemaField, handle: field.handle)
       |> case do
         nil ->
-          repo.insert!(field)
-
+          repo.insert!(%{
+            field |
+              inserted_at: NaiveDateTime.utc_now |> NaiveDateTime.truncate(:second),
+              updated_at: NaiveDateTime.utc_now |> NaiveDateTime.truncate(:second),
+          })
         _ ->
           :ok
       end

@@ -44,5 +44,6 @@ defmodule Rehoboam.Schemas.SchemaField do
     belongs_to :file, Rehoboam.Assets.File
     belongs_to :image, Rehoboam.Assets.File
     belongs_to :user, Rehoboam.Users.User
+    timestamps()
   end
 end
