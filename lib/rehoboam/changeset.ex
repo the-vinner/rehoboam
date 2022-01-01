@@ -68,6 +68,38 @@ defmodule Rehoboam.Changeset do
     end
   end
 
+  @spec merge_localized_map(Ecto.Changeset.t(), atom(), map()) :: Ecto.Changeset.t()
+  def merge_localized_map(cs, key, params) do
+    if Map.has_key?(params, key) do
+      Map.get(params, key)
+      |> Enum.reduce(
+        get_field(cs, key),
+        fn {locale, value}, current_value ->
+          Map.put(
+            current_value,
+            locale,
+            Map.merge(
+              Map.get(current_value, locale) || %{},
+              value
+            )
+          )
+        end
+      )
+    else
+      cs
+    end
+  end
+
+  @spec merge_localized_value(Ecto.Changeset.t(), atom(), map()) :: Ecto.Changeset.t()
+  def merge_localized_value(cs, key, params) do
+    if Map.has_key?(params, key) do
+      current_value = get_field(cs, key) || %{}
+      put_change(cs, key, Map.merge(current_value, Map.get(params, key)))
+    else
+      cs
+    end
+  end
+
   def slugify_slug(%Ecto.Changeset{changes: %{slug: slug}} = cs) when not is_nil(slug) do
     put_change(cs, :slug, Slugger.slugify_downcase(slug))
   end

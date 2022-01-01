@@ -25,10 +25,12 @@ defmodule Rehoboam.Schemas.Schema do
     belongs_to(:image, Rehoboam.Assets.File)
     belongs_to(:schema, Rehoboam.Schemas.Schema)
     belongs_to(:user, Rehoboam.Users.User)
+    has_many :fields, Rehoboam.Schemas.Field
     timestamps()
   end
 
   @required_fields [
+    :handle,
     :user_id
   ]
   @allowed_fields [
@@ -52,6 +54,7 @@ defmodule Rehoboam.Schemas.Schema do
   def changeset(struct, params) do
     struct
     |> cast(params, @allowed_fields)
+    |> cast_assoc(:fields)
     |> assoc_constraint(:icon)
     |> assoc_constraint(:image)
     |> assoc_constraint(:schema)
@@ -62,6 +65,7 @@ defmodule Rehoboam.Schemas.Schema do
     |> validate_required(@required_fields)
   end
 
+  @spec ensure_handle_uniqueness(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def ensure_handle_uniqueness(cs) do
     Rehoboam.Changeset.ensure_field_uniqueness(
       cs,

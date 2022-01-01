@@ -57,7 +57,7 @@ defmodule Rehoboam.Schemas.SchemaService do
       ^(ctx.filters
         |> Map.to_list())
     )
-    |> order_by([desc: :title])
+    |> order_by(desc: :title)
   end
 
   def query(q, _args), do: q

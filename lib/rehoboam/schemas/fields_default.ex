@@ -1,9 +1,9 @@
-defmodule Rehoboam.Schemas.SchemaFieldDefaults do
-  alias Rehoboam.Schemas.SchemaField
+defmodule Rehoboam.Schemas.FieldDefaults do
+  alias Rehoboam.Schemas.Field
 
   def list do
     [
-      %SchemaField{
+      %Field{
         description_i18n: %{
           "en-US" => "Entry Title"
         },
@@ -17,7 +17,7 @@ defmodule Rehoboam.Schemas.SchemaFieldDefaults do
         },
         type: :text
       },
-      %SchemaField{
+      %Field{
         description_i18n: %{
           "en-US" => "Entry body"
         },
@@ -27,7 +27,7 @@ defmodule Rehoboam.Schemas.SchemaFieldDefaults do
         handle: "body",
         type: :text_rich
       },
-      %SchemaField{
+      %Field{
         description_i18n: %{
           "en-US" => "Entry description."
         },
@@ -41,40 +41,43 @@ defmodule Rehoboam.Schemas.SchemaFieldDefaults do
         handle: "description",
         type: :text_long
       },
-      %SchemaField{
+      %Field{
         description_i18n: %{
           "en-US" => "Entry images."
         },
         handle: "images",
+        is_image: true,
         title_i18n: %{
           "en-US" => "Images"
         },
         type: :images
       },
-      %SchemaField{
+      %Field{
         description_i18n: %{
           "en-US" => "Entry thumbnails."
         },
         handle: "thumbnails",
+        is_thumbnail: true,
         title_i18n: %{
           "en-US" => "Thumbnails"
         },
         type: :images
-      },
+      }
     ]
   end
 
   def seed(repo) do
     list()
     |> Enum.map(fn field ->
-      repo.get_by(SchemaField, handle: field.handle)
+      repo.get_by(Field, handle: field.handle)
       |> case do
         nil ->
           repo.insert!(%{
-            field |
-              inserted_at: NaiveDateTime.utc_now |> NaiveDateTime.truncate(:second),
-              updated_at: NaiveDateTime.utc_now |> NaiveDateTime.truncate(:second),
+            field
+            | inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
+              updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
           })
+
         _ ->
           :ok
       end

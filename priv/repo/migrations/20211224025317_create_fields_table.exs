@@ -1,15 +1,15 @@
-defmodule Rehoboam.Repo.Migrations.CreateSchemaFieldsTable do
+defmodule Rehoboam.Repo.Migrations.CreateFieldsTable do
   use Ecto.Migration
 
   def change do
     execute "CREATE EXTENSION IF NOT EXISTS postgis;", "DROP EXTENSION postgis"
     execute "CREATE EXTENSION IF NOT EXISTS postgis_topology;", "DROP EXTENSION postgis_topology"
 
-    create table(:schema_fields) do
+    create table(:fields) do
       add :deleted_at, :utc_datetime
       add :description_i18n, :map
       add :file_id, references(:files, on_delete: :nilify_all)
-      add :handle, :text
+      add :handle, :text, null: false
       add :image_id, references(:files, on_delete: :nilify_all)
       add :is_body, :boolean
       add :is_description, :boolean
@@ -21,6 +21,8 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemaFieldsTable do
       add :meta, :map
       add :placeholder_i18n, :map
       add :title_i18n, :map
+      add :ordering, :integer, null: false
+      add :schema_id, references(:schemas, on_delete: :delete_all), null: false
 
       add :type, :string
       add :user_id, references(:users, on_delete: :nilify_all)
@@ -28,6 +30,7 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemaFieldsTable do
       timestamps()
     end
 
-    create index("schema_fields", [:handle], unique: true)
+    create index("fields", [:handle, :schema_id], unique: true)
+    create index("fields", [:schema_id])
   end
 end

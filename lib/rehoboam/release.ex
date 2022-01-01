@@ -51,7 +51,7 @@ defmodule Rehoboam.Release do
         Ecto.Migrator.with_repo(repo, fn repo ->
           seed_locales(repo)
           seed(repo)
-          Rehoboam.Schemas.SchemaFieldDefaults.seed(repo)
+          Rehoboam.Schemas.FieldDefaults.seed(repo)
         end)
     end
   end
@@ -67,7 +67,7 @@ defmodule Rehoboam.Release do
 
   def seed(repo) do
     email = Application.fetch_env!(@app, :root_user_email)
-    Rehoboam.Schemas.SchemaFieldDefaults.seed(repo)
+    Rehoboam.Schemas.FieldDefaults.seed(repo)
 
     if email do
       repo.get_by(User, email: email)
