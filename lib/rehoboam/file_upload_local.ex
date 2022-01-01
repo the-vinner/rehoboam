@@ -13,6 +13,15 @@ defmodule Rehoboam.FileUploadLocal do
     Enum.join([@files_directory, type, file_name(ctx)], "/")
   end
 
+  @impl true
+  def get_url(%{type: _, title_safe: _, uuid: _} = ctx, _) do
+    Enum.join(
+    [ctx.title_safe, ctx.uuid],
+      "/"
+    )
+  end
+
+  @impl true
   def upload(%FileUpload{path: path} = ctx) do
     File.write(
       get_path(ctx),

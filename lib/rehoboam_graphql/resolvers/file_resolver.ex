@@ -3,6 +3,7 @@ defmodule RehoboamGraphQl.Resolver.File do
   alias Rehoboam.Assets.FileService
   alias Rehoboam.Assets.File
   use Absinthe.Relay.Schema.Notation, :modern
+  @file_upload Application.compile_env(:rehoboam, :file_upload)
 
   def collection(args, %{context: %Service{} = ctx}) do
     q = FileService.query(ctx)
@@ -79,7 +80,7 @@ defmodule RehoboamGraphQl.Resolver.File do
   end
 
   def get_url(%File{} = f) do
-    Rehoboam.FileUpload.get_url(Map.put(f, :type, Rehoboam.Assets.File.type(f)))
+    @file_upload.get_url(Map.put(f, :type, Rehoboam.Assets.File.type(f)), nil)
   end
 
   def get_url(_), do: nil

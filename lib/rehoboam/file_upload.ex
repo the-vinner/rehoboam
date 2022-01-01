@@ -1,6 +1,5 @@
 defmodule Rehoboam.FileUpload do
   use TypedStruct
-  alias __MODULE__
 
   typedstruct do
     field :mime_type, :string, enforce: true
@@ -11,5 +10,6 @@ defmodule Rehoboam.FileUpload do
     field :type, String.t(), enforce: true
   end
 
-  @callback upload(FileUpload.t()) :: {:ok, any()} | {:error, any()}
+  @callback get_url(%{type: String.t(), title_safe: String.t(), uuid: String.t()}, String.t()) :: String.t()
+  @callback upload(Rehoboam.FileUpload.t()) :: {:ok, any()} | {:error, any()}
 end

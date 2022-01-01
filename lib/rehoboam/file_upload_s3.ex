@@ -1,7 +1,6 @@
 defmodule Rehoboam.FileUploadS3 do
   @app_name Application.compile_env(:ex_aws, :s3)[:app]
   @behaviour Rehoboam.FileUpload
-  alias Rehoboam.FileUpload
 
   @spec file_name(map()) :: String.t()
   def file_name(%{uuid: uuid, title_safe: title_safe}) do
@@ -13,19 +12,20 @@ defmodule Rehoboam.FileUploadS3 do
     Enum.join([type, file_name(ctx)], "/")
   end
 
-  @spec get_url(map(), String.t()) :: String.t()
-  def get_url(%{type: _, title_safe: _, uuid: _} = ctx, prefix \\ "//") do
+  @impl true
+  def get_url(%{type: _, title_safe: _, uuid: _} = ctx, _) do
     Enum.join(
-      ["#{prefix}", get_path(ctx)],
+      ["//", get_path(ctx)],
       "/"
     )
   end
 
-  def upload(%FileUpload{path: path} = ctx) do
+  @impl true
+  def upload(%Rehoboam.FileUpload{} = ctx) do
     ExAws.S3.put_object(
       @app_name,
       get_path(ctx),
-      File.read!(path),
+      File.read!(ctx.path),
       acl: (ctx.public && "public-read") || "private",
       content_type: ctx.mime_type
     )
