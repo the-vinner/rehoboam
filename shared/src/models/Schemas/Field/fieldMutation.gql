@@ -1,0 +1,43 @@
+mutation fieldMutation(
+  $changes: FieldInput,
+  $filters: FieldFiltersSingle
+) {
+  fieldMutation(
+    changes: $changes,
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      internalId
+      deletedAt
+      descriptionI18n
+      fileId
+      handle
+      id
+      imageId
+      insertedAt
+      isBody
+      isDescription
+      isImage
+      isLocation
+      isThumbnail
+      isTime
+      isTitle
+      meta
+      ordering
+      placeholderI18n
+      schemaId
+      titleI18n
+      type
+      updatedAt
+      userId
+      validations
+      
+    }
+  }
+}

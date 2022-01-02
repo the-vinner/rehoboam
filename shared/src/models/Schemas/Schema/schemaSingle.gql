@@ -7,7 +7,7 @@ query schemaSingle(
     __typename
     internalId
     deletedAt
-    description
+    descriptionI18n
     fileId
     handle
     id
@@ -17,7 +17,7 @@ query schemaSingle(
     publishedAt
     schemaId
     slug
-    title
+    titleI18n
     updatedAt
     userId
     

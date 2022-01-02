@@ -15,7 +15,7 @@ mutation schemaMutation(
       __typename
       internalId
       deletedAt
-      description
+      descriptionI18n
       fileId
       handle
       id
@@ -25,7 +25,7 @@ mutation schemaMutation(
       publishedAt
       schemaId
       slug
-      title
+      titleI18n
       updatedAt
       userId
       

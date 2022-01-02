@@ -1,0 +1,123 @@
+[
+  {
+    "name": "deletedAt",
+    "type": "datetime",
+    "validations": []
+  },
+  {
+    "name": "descriptionI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "fileId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "handle",
+    "type": "string",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "id",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "imageId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "isBody",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isDescription",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isImage",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isLocation",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isThumbnail",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isTime",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "isTitle",
+    "type": "boolean",
+    "validations": []
+  },
+  {
+    "name": "meta",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "ordering",
+    "type": "integer",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "placeholderI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "schemaId",
+    "type": "id",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "titleI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "type",
+    "type": "string",
+    "validations": []
+  },
+  {
+    "name": "userId",
+    "type": "id",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "validations",
+    "type": "json",
+    "validations": []
+  }
+]

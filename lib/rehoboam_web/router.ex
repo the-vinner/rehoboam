@@ -36,6 +36,7 @@ defmodule RehoboamWeb.Router do
     end
 
     plug Potionx.Plug.UrqlUpload
+    plug Rehoboam.Plugs.Localize
     plug Potionx.Plug.Absinthe
   end
 

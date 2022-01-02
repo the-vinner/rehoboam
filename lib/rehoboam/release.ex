@@ -13,21 +13,9 @@ defmodule Rehoboam.Release do
     end
   end
 
+
   def seed_locales(repo) do
-    [
-      %Locale{
-        locale: "en-US",
-        title: "English"
-      },
-      %Locale{
-        locale: "es-ES",
-        title: "Español"
-      },
-      %Locale{
-        locale: "fr-FR",
-        title: "Français"
-      }
-    ]
+    Locale.defaults()
     |> Enum.each(fn locale ->
       repo.get_by(Locale, locale: locale.locale)
       |> case do

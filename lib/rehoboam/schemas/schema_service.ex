@@ -69,13 +69,17 @@ defmodule Rehoboam.Schemas.SchemaService do
   end
 
   def query(%Service{} = ctx) do
+    locale = ctx.locale || ctx.locale_default
     Schema
     |> search(ctx)
     |> where(
       ^(ctx.filters
         |> Map.to_list())
     )
-    |> order_by(desc: :title)
+    |> order_by([
+      desc: fragment("title_i18n->>?", ^to_string(locale)),
+      desc: :id
+    ])
   end
 
   def query(q, _args), do: q

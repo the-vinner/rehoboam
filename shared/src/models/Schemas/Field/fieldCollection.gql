@@ -1,0 +1,57 @@
+query fieldCollection(
+  $after: String,
+  $before: String,
+  $first: Int,
+  $last: Int,
+  $filters: FieldFilters,
+  $search: String
+) {
+  fieldCollection(
+    after: $after,
+    before: $before,
+    first: $first,
+    filters: $filters,
+    last: $last,
+    search: $search
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    count
+    countBefore
+    edges {
+      node {
+        __typename
+        internalId
+        deletedAt
+        descriptionI18n
+        fileId
+        handle
+        id
+        imageId
+        insertedAt
+        isBody
+        isDescription
+        isImage
+        isLocation
+        isThumbnail
+        isTime
+        isTitle
+        meta
+        ordering
+        placeholderI18n
+        schemaId
+        titleI18n
+        type
+        updatedAt
+        userId
+        validations
+        
+      }
+      cursor
+    }
+  }
+}

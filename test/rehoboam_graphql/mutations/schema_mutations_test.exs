@@ -2,6 +2,7 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
   use Rehoboam.DataCase
   alias Rehoboam.Schemas.SchemaMock
   alias Rehoboam.Schemas.SchemaService
+  import Ecto.Query
 
   describe "schema delete" do
     setup do
@@ -62,6 +63,8 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
       )
       |> (fn {:ok, res} ->
             assert res.data["schemaMutation"]["node"]["id"]
+            assert res.data["schemaMutation"]["node"]["titleI18n"] === "test"
+            assert Rehoboam.Repo.all(from(f in Rehoboam.Schemas.Field)) |> Enum.count() === 4
           end).()
     end
   end

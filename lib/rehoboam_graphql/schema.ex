@@ -3,6 +3,8 @@ defmodule RehoboamGraphQl.Schema do
 
   node interface do
     resolve_type(fn
+      %Rehoboam.Schemas.Field{}, _ ->
+        :field
       %Rehoboam.Schemas.Schema{}, _ ->
         :schema
 
@@ -32,6 +34,7 @@ defmodule RehoboamGraphQl.Schema do
       RehoboamGraphQl.Resolver.Schema,
       RehoboamGraphQl.Resolver.Schema.data()
     )
+    |> Dataloader.add_source(RehoboamGraphQl.Resolver.Field, RehoboamGraphQl.Resolver.Field.data())
   end
 
   def get_key(%{source: source} = res, key) do
@@ -89,6 +92,7 @@ defmodule RehoboamGraphQl.Schema do
     import_fields(:user_queries)
     import_fields(:file_queries)
     import_fields(:schema_queries)
+    import_fields :field_queries
   end
 
   mutation do
@@ -96,12 +100,22 @@ defmodule RehoboamGraphQl.Schema do
     import_fields(:auth_mutations)
     import_fields(:file_mutations)
     import_fields(:schema_mutations)
+    import_fields :field_mutations
   end
 
   interface :rehoboam_mutation do
     field :errors, list_of(:string)
     field :errors_fields, list_of(:error)
     field :success_msg, :string
+  end
+
+  scalar :localized do
+    parse(fn
+      %{value: v}, %Potionx.Context.Service{locale: locale, locale_default: locale_default} ->
+        {:ok, Map.put(%{}, to_string(locale || locale_default), v)}
+      _, _ ->
+        {:ok, nil}
+    end)
   end
 
   import_types(RehoboamGraphQl.Schema.AuthMutations)
@@ -115,4 +129,7 @@ defmodule RehoboamGraphQl.Schema do
   import_types(RehoboamGraphQl.Schema.SchemaMutations)
   import_types(RehoboamGraphQl.Schema.SchemaQueries)
   import_types(RehoboamGraphQl.Schema.SchemaTypes)
+  import_types RehoboamGraphQl.Schema.FieldMutations
+  import_types RehoboamGraphQl.Schema.FieldQueries
+  import_types RehoboamGraphQl.Schema.FieldTypes
 end

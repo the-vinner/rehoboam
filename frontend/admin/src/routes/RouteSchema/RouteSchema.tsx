@@ -31,9 +31,6 @@ export default defineComponent({
       data: computed(() => {
         if (isNew.value) {
           return {
-            enableDescription: true,
-            enableImage: true,
-            enableTitle: true,
           };
         }
         return schema.value;

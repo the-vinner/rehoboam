@@ -5,7 +5,7 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
 
   node object(:schema) do
     field :deleted_at, :datetime
-    field :description, :string
+    field :description_i18n, :string, resolve: RehoboamGraphQl.Resolver.localize(:description_i18n)
     field :file, :file, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :file_id, :id
     field :handle, :string
@@ -17,7 +17,9 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :schema, :schema, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :schema_id, :id
     field :slug, :string
-    field :title, :string
+    field :title_i18n, :string, resolve: RehoboamGraphQl.Resolver.localize(:title_i18n)
+    field :file, :file, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
+    # field :fields, list_of(:field), resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :updated_at, :naive_datetime
     field :user, :user, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :user_id, :id
@@ -34,16 +36,6 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
   input_object :schema_filters do
     field :deleted_at, :datetime
     field :description, :string
-    field :enable_description, :boolean
-    field :enable_end_at, :boolean
-    field :enable_file, :boolean
-    field :enable_image, :boolean
-    field :enable_location, :boolean
-    field :enable_price, :boolean
-    field :enable_price_compare_at, :boolean
-    field :enable_start_at, :boolean
-    field :enable_thumbnail, :boolean
-    field :enable_title, :boolean
     field :file_id, :global_id
     field :handle, :string
     field :inserted_at, :naive_datetime
@@ -59,17 +51,7 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
 
   input_object :schema_input do
     field :deleted_at, :datetime
-    field :description, :string
-    field :enable_description, :boolean
-    field :enable_end_at, :boolean
-    field :enable_file, :boolean
-    field :enable_image, :boolean
-    field :enable_location, :boolean
-    field :enable_price, :boolean
-    field :enable_price_compare_at, :boolean
-    field :enable_start_at, :boolean
-    field :enable_thumbnail, :boolean
-    field :enable_title, :boolean
+    field :description_i18n, :localized
     field :file_id, :global_id
     field :handle, :string
     field :inserted_at, :naive_datetime
@@ -78,7 +60,7 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :published_at, :datetime
     field :schema_id, :global_id
     field :slug, :string
-    field :title, :string
+    field :title_i18n, :localized
     field :updated_at, :naive_datetime
     field :user_id, :global_id
   end

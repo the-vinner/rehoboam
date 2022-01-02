@@ -100,14 +100,18 @@ defmodule Rehoboam.Schemas.Field do
   def ensure_handle_uniqueness(cs) do
     schema_id = get_field(cs, :schema_id)
 
-    Rehoboam.Changeset.ensure_field_uniqueness(
-      cs,
-      from(f in Rehoboam.Schemas.Field, where: f.schema_id == ^schema_id),
-      %{
-        field: :handle,
-        separator: "_"
-      }
-    )
+    if (schema_id) do
+      Rehoboam.Changeset.ensure_field_uniqueness(
+        cs,
+        from(f in Rehoboam.Schemas.Field, where: f.schema_id == ^schema_id),
+        %{
+          field: :handle,
+          separator: "_"
+        }
+      )
+    else
+      cs
+    end
   end
 
   def maybe_add_handle(cs, %{title_i18n: title}) when not is_nil(title) do
@@ -118,7 +122,5 @@ defmodule Rehoboam.Schemas.Field do
       put_change(cs, :handle, Slugger.slugify_downcase(title, ?_))
     end
   end
-
-  @spec maybe_add_handle(any) :: any
-  def maybe_add_handle(cs), do: cs
+  def maybe_add_handle(cs, _), do: cs
 end

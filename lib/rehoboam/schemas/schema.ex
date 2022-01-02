@@ -4,12 +4,12 @@ defmodule Rehoboam.Schemas.Schema do
 
   schema "schemas" do
     field :deleted_at, :utc_datetime
-    field :description, :map
+    field :description_i18n, :map
     field :handle, :string
     field :is_latest, :boolean, default: false
     field :private, :boolean, default: true
     field :published_at, :utc_datetime
-    field :title, :string
+    field :title_i18n, :map
 
     belongs_to(:icon, Rehoboam.Assets.File)
     belongs_to(:image, Rehoboam.Assets.File)
@@ -24,11 +24,9 @@ defmodule Rehoboam.Schemas.Schema do
     :user_id
   ]
   @allowed_fields [
-                    :description,
                     :is_latest,
                     :private,
-                    :published_at,
-                    :title
+                    :published_at
                   ] ++ @required_fields
 
   def changeset(struct, params) do
@@ -41,6 +39,8 @@ defmodule Rehoboam.Schemas.Schema do
     |> assoc_constraint(:user)
     |> maybe_add_handle()
     |> ensure_handle_uniqueness
+    |> Rehoboam.Changeset.merge_localized_value(:description_i18n, params)
+    |> Rehoboam.Changeset.merge_localized_value(:title_i18n, params)
     |> unique_constraint(:handle)
     |> validate_required(@required_fields)
   end

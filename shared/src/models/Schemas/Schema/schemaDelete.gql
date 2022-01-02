@@ -12,7 +12,7 @@ mutation schemaDelete(
     node {
       __typename
       deletedAt
-      description
+      descriptionI18n
       fileId
       handle
       id
@@ -22,7 +22,7 @@ mutation schemaDelete(
       publishedAt
       schemaId
       slug
-      title
+      titleI18n
       updatedAt
       userId
       
