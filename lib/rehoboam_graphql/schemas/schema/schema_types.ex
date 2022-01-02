@@ -6,16 +6,6 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
   node object(:schema) do
     field :deleted_at, :datetime
     field :description, :string
-    field :enable_description, :boolean
-    field :enable_end_at, :boolean
-    field :enable_file, :boolean
-    field :enable_image, :boolean
-    field :enable_location, :boolean
-    field :enable_price, :boolean
-    field :enable_price_compare_at, :boolean
-    field :enable_start_at, :boolean
-    field :enable_thumbnail, :boolean
-    field :enable_title, :boolean
     field :file, :file, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :file_id, :id
     field :handle, :string

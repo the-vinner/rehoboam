@@ -13,16 +13,6 @@ mutation schemaDelete(
       __typename
       deletedAt
       description
-      enableDescription
-      enableEndAt
-      enableFile
-      enableImage
-      enableLocation
-      enablePrice
-      enablePriceCompareAt
-      enableStartAt
-      enableThumbnail
-      enableTitle
       fileId
       handle
       id

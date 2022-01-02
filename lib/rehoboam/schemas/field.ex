@@ -15,6 +15,7 @@ defmodule Rehoboam.Schemas.Field do
     field :is_time, :boolean
     field :is_title, :boolean
     field :meta, :map
+    field :ordering, :integer
     field :placeholder_i18n, :map
     field :title_i18n, :map
 
@@ -53,6 +54,7 @@ defmodule Rehoboam.Schemas.Field do
 
   @required_fields [
     :handle,
+    :ordering,
     :schema_id,
     :user_id
   ]
@@ -83,6 +85,17 @@ defmodule Rehoboam.Schemas.Field do
     |> validate_required(@required_fields)
   end
 
+  def changeset_cast(struct, params) do
+    struct
+    |> cast(params, @allowed_fields)
+    |> maybe_add_handle(params)
+    |> Rehoboam.Changeset.merge_localized_value(:description_i18n, params)
+    |> Rehoboam.Changeset.merge_localized_value(:placeholder_i18n, params)
+    |> Rehoboam.Changeset.merge_localized_value(:title_i18n, params)
+    |> unique_constraint([:handle, :schema_id])
+    |> validate_required([:handle])
+  end
+
   @spec ensure_handle_uniqueness(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def ensure_handle_uniqueness(cs) do
     schema_id = get_field(cs, :schema_id)
@@ -99,12 +112,13 @@ defmodule Rehoboam.Schemas.Field do
 
   def maybe_add_handle(cs, %{title_i18n: title}) when not is_nil(title) do
     title = Map.values(title) |> Enum.at(0)
-    if get_field(cs, :handle) or is_nil(title) do
+    if get_field(cs, :handle) || is_nil(title) do
       cs
     else
       put_change(cs, :handle, Slugger.slugify_downcase(title, ?_))
     end
   end
 
+  @spec maybe_add_handle(any) :: any
   def maybe_add_handle(cs), do: cs
 end

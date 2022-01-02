@@ -5,16 +5,6 @@ defmodule Rehoboam.Schemas.Schema do
   schema "schemas" do
     field :deleted_at, :utc_datetime
     field :description, :map
-    field :enable_description, :boolean, default: true
-    field :enable_end_at, :boolean
-    field :enable_file, :boolean
-    field :enable_image, :boolean
-    field :enable_location, :boolean
-    field :enable_price_compare_at, :boolean
-    field :enable_price, :boolean
-    field :enable_start_at, :boolean
-    field :enable_thumbnail, :boolean
-    field :enable_title, :boolean, default: true
     field :handle, :string
     field :is_latest, :boolean, default: false
     field :private, :boolean, default: true
@@ -35,16 +25,6 @@ defmodule Rehoboam.Schemas.Schema do
   ]
   @allowed_fields [
                     :description,
-                    :enable_description,
-                    :enable_end_at,
-                    :enable_file,
-                    :enable_image,
-                    :enable_location,
-                    :enable_price,
-                    :enable_price_compare_at,
-                    :enable_start_at,
-                    :enable_thumbnail,
-                    :enable_title,
                     :is_latest,
                     :private,
                     :published_at,
@@ -54,7 +34,7 @@ defmodule Rehoboam.Schemas.Schema do
   def changeset(struct, params) do
     struct
     |> cast(params, @allowed_fields)
-    |> cast_assoc(:fields)
+    |> cast_assoc(:fields, with: &Rehoboam.Schemas.Field.changeset_cast/2)
     |> assoc_constraint(:icon)
     |> assoc_constraint(:image)
     |> assoc_constraint(:schema)

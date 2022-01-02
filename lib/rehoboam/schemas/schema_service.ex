@@ -4,6 +4,22 @@ defmodule Rehoboam.Schemas.SchemaService do
   alias Rehoboam.Repo
   import Ecto.Query
 
+  def add_default_fields(changes) do
+    fields =
+      Rehoboam.Schemas.FieldDefaults.list()
+      |> Enum.filter(fn field ->
+        Enum.member?([
+          "title",
+          "description",
+          "images",
+          "thumbnails"
+        ], field.handle)
+      end)
+      |> Enum.with_index()
+      |> Enum.map(fn {f, i} -> Map.from_struct(%{f | ordering: i}) end)
+    Map.put(changes, :fields, fields)
+  end
+
   def count(%Service{} = ctx) do
     from(item in query(ctx))
     |> select([i], count(i.id))
@@ -41,7 +57,9 @@ defmodule Rehoboam.Schemas.SchemaService do
     %Schema{
       user_id: ctx.user.id
     }
-    |> Schema.changeset(ctx.changes)
+    |> Schema.changeset(
+      add_default_fields(ctx.changes)
+    )
     |> Repo.insert()
   end
 

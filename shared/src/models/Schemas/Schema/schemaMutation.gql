@@ -16,16 +16,6 @@ mutation schemaMutation(
       internalId
       deletedAt
       description
-      enableDescription
-      enableEndAt
-      enableFile
-      enableImage
-      enableLocation
-      enablePrice
-      enablePriceCompareAt
-      enableStartAt
-      enableThumbnail
-      enableTitle
       fileId
       handle
       id

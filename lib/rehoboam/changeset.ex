@@ -92,14 +92,16 @@ defmodule Rehoboam.Changeset do
 
   @spec merge_localized_value(Ecto.Changeset.t(), atom(), map()) :: Ecto.Changeset.t()
   def merge_localized_value(cs, key, params) do
-    if Map.has_key?(params, key) do
+    value = Map.get(params, key)
+    if value do
       current_value = get_field(cs, key) || %{}
-      put_change(cs, key, Map.merge(current_value, Map.get(params, key)))
+      put_change(cs, key, Map.merge(current_value, value))
     else
       cs
     end
   end
 
+  @spec slugify_slug(any) :: any
   def slugify_slug(%Ecto.Changeset{changes: %{slug: slug}} = cs) when not is_nil(slug) do
     put_change(cs, :slug, Slugger.slugify_downcase(slug))
   end

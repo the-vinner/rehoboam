@@ -84,7 +84,7 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
         RehoboamGraphQl.Schema,
         context: ctx,
         variables: %{
-          "changes" => %{"enable_file" => true},
+          "changes" => %{"private" => true},
           "filters" => %{
             "id" =>
               Absinthe.Relay.Node.to_global_id(
@@ -97,7 +97,7 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
       )
       |> (fn {:ok, res} ->
             assert res.data["schemaMutation"]["node"]["internalId"] === "#{entry.id}"
-            assert res.data["schemaMutation"]["node"]["enableFile"]
+            assert res.data["schemaMutation"]["node"]["private"]
           end).()
     end
   end
