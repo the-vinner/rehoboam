@@ -18,6 +18,10 @@ defmodule Rehoboam.Localization.Locale do
     |> unique_constraint(:locale)
   end
 
+  def default do
+    defaults() |> Enum.at(0)
+  end
+
   def defaults do
     [
       %Locale{

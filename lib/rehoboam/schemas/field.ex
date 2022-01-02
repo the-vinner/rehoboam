@@ -56,6 +56,7 @@ defmodule Rehoboam.Schemas.Field do
     :handle,
     :ordering,
     :schema_id,
+    :type,
     :user_id
   ]
   @allowed_fields [

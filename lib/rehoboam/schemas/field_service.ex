@@ -33,7 +33,9 @@ defmodule Rehoboam.Schemas.FieldService do
     end
   end
   def mutation(%Service{} = ctx) do
-    %Field{}
+    %Field{
+      user_id: ctx.user.id
+    }
     |> Field.changeset(ctx.changes)
     |> Repo.insert
   end

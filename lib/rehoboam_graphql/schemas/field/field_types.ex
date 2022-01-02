@@ -3,6 +3,29 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
   use Absinthe.Relay.Schema.Notation, :modern
   import Absinthe.Resolution.Helpers
 
+  enum :field_types do
+    value :boolean
+    value :checkbox
+    value :custom
+    value :date
+    value :datetime
+    value :email
+    value :files
+    value :images
+    value :location
+    value :number
+    value :phone
+    value :price
+    value :radio
+    value :select
+    value :relationships
+    value :text
+    value :text_long
+    value :text_rich
+    value :time
+    value :url
+  end
+
   node object :field do
     field :deleted_at, :datetime
     field :description_i18n, :json
@@ -26,7 +49,7 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
     field :schema, :field, resolve: dataloader(RehoboamGraphQl.Resolver.Field)
     field :schema_id, :id
     field :title_i18n, :json
-    field :type, :string
+    field :type, :field_types
     field :updated_at, :naive_datetime
     field :user, :user, resolve: dataloader(RehoboamGraphQl.Resolver.Field)
     field :user_id, :id
@@ -55,9 +78,9 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
     field :meta, :json
     field :ordering, :integer
     field :placeholder_i18n, :json
-    field :schema_id, :global_id
+    field :schema_id, non_null(:global_id)
     field :title_i18n, :json
-    field :type, :string
+    field :type, :field_types
     field :updated_at, :naive_datetime
     field :user_id, :global_id
     field :validations, :json
@@ -81,7 +104,7 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
     field :placeholder_i18n, :json
     field :schema_id, :global_id
     field :title_i18n, :json
-    field :type, :string
+    field :type, :field_types
     field :updated_at, :naive_datetime
     field :user_id, :global_id
     field :validations, :json

@@ -1,5 +1,6 @@
 defmodule Rehoboam.Schemas.FieldMock do
   def run do
+
     %{
       deleted_at: ~U[2022-01-01 20:14:00Z],
       description_i18n: %{},
@@ -19,10 +20,9 @@ defmodule Rehoboam.Schemas.FieldMock do
       ordering: 42,
       placeholder_i18n: %{},
       schema_id: "some schema_id",
-      title_i18n: %{},
-      type: "some type",
+      title_i18n: Map.put(%{}, Rehoboam.Localization.Locale.default().locale, "title"),
+      type: :text,
       updated_at: ~N[2022-01-01 20:14:00],
-      user_id: "some user_id",
       validations: %{}
     }
   end
@@ -47,10 +47,9 @@ defmodule Rehoboam.Schemas.FieldMock do
       ordering: 43,
       placeholder_i18n: %{},
       schema_id: "some updated schema_id",
-      title_i18n: %{},
-      type: "some updated type",
+      title_i18n: Map.put(%{}, Rehoboam.Localization.Locale.default().locale, "title2"),
+      type: :text,
       updated_at: ~N[2022-01-02 20:14:00],
-      user_id: "some updated user_id",
       validations: %{}
     }
   end

@@ -5,7 +5,7 @@ defmodule RehoboamGraphQl.Schema.FieldQueries do
   object :field_queries do
     connection field :field_collection, node_type: :field do
       # :after, :before, :first, :last added by connection
-      arg :filters, :field_filters
+      arg :filters, non_null(:field_filters)
       arg :order, type: :sort_order, default_value: :asc
       arg :search, :string
       middleware Potionx.Middleware.RolesAuthorization, [roles: [:admin]]

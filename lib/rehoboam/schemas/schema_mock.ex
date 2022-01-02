@@ -12,7 +12,7 @@ defmodule Rehoboam.Schemas.SchemaMock do
       published_at: ~U[2021-12-23 03:36:00Z],
       schema_id: "some schema_id",
       slug: "some slug",
-      title_i18n: "test",
+      title_i18n: Map.put(%{}, Rehoboam.Localization.Locale.default().locale, "title"),
       updated_at: ~N[2021-12-23 03:36:00]
     }
   end
@@ -30,7 +30,7 @@ defmodule Rehoboam.Schemas.SchemaMock do
       published_at: ~U[2021-12-24 03:36:00Z],
       schema_id: "some updated schema_id",
       slug: "some updated slug",
-      title_i18n: "test2",
+      title_i18n: Map.put(%{}, Rehoboam.Localization.Locale.default().locale, "title2"),
       updated_at: ~N[2021-12-24 03:36:00]
     }
   end

@@ -46,19 +46,15 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
     end
 
     test "creates schema", %{ctx: ctx} do
-      changes =
-        Enum.map(ctx.changes, fn
-          {k, v} when v === %{} -> {k, Jason.encode!(%{})}
-          {k, v} -> {k, v}
-        end)
-        |> Enum.into(%{})
-
       Elixir.File.read!("shared/src/models/Schemas/Schema/schemaMutation.gql")
       |> Absinthe.run(
         RehoboamGraphQl.Schema,
         context: ctx,
         variables: %{
-          "changes" => Jason.decode!(Jason.encode!(changes))
+          "changes" => %{
+            "handle" => "test",
+            "titleI18n" => "test"
+          }
         }
       )
       |> (fn {:ok, res} ->

@@ -4,7 +4,11 @@ defmodule RehoboamGraphQl.Resolver do
       {
         :ok,
         Map.get(el, key)
-        |> Map.get(to_string(locale || locale_default))
+        |> case do
+          val when is_map(val) ->
+            Map.get(val, to_string(locale || locale_default))
+          other -> other
+        end
       }
     end
   end

@@ -24,7 +24,7 @@ defmodule Rehoboam.Repo.Migrations.CreateFieldsTable do
       add :ordering, :integer, null: false
       add :schema_id, references(:schemas, on_delete: :delete_all), null: false
 
-      add :type, :string
+      add :type, :string, null: false
       add :user_id, references(:users, on_delete: :nilify_all)
       add :validations, :map
       timestamps()
