@@ -1,5 +1,6 @@
 defmodule RehoboamGraphQl.Schema.FieldMutationTest do
   use Rehoboam.DataCase
+  alias Rehoboam.Schemas.Field
 
   describe "field delete" do
     setup do
@@ -30,7 +31,7 @@ defmodule RehoboamGraphQl.Schema.FieldMutationTest do
     end
   end
 
-  describe "field new mutation" do
+  describe "field mutation" do
     setup do
       ctx =
         prepare_ctx(%Potionx.Context.Service{
@@ -57,6 +58,27 @@ defmodule RehoboamGraphQl.Schema.FieldMutationTest do
       )
       |> (fn {:ok, res} ->
             assert res.data["fieldMutation"]["node"]["id"]
+            assert Repo.get(Field, Enum.at(schema.fields, 0).id).ordering === 1
+          end).()
+    end
+
+    test "reorders field", %{ctx: ctx, schema: schema} do
+      Elixir.File.read!("shared/src/models/Schemas/Field/fieldMutation.gql")
+      |> Absinthe.run(
+        RehoboamGraphQl.Schema,
+        context: ctx,
+        variables: %{
+          "changes" => %{
+            "ordering" => 3
+          },
+          "filters" => %{
+            "id" => Enum.at(schema.fields, 0).id
+          }
+        }
+      )
+      |> (fn {:ok, res} ->
+            assert res.data["fieldMutation"]["node"]["id"]
+            assert Repo.get(Field, Enum.at(schema.fields, 1).id).ordering === 0
           end).()
     end
   end

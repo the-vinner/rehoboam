@@ -1,4 +1,5 @@
 defmodule Rehoboam.Schemas.Field do
+  alias __MODULE__
   import Ecto.Changeset
   import Ecto.Query
   use Ecto.Schema
@@ -74,6 +75,35 @@ defmodule Rehoboam.Schemas.Field do
                     :type
                   ] ++ @required_fields
 
+  def adjust_ordering(cs) do
+    cs
+    |> prepare_changes(fn changeset ->
+      ordering_next = get_change(changeset, :ordering)
+      ordering_current = changeset.data.ordering
+      schema_id = get_field(changeset, :schema_id)
+      query = from(f in Field, where: f.schema_id == ^schema_id)
+
+      cond do
+        is_nil(ordering_current) ->
+          from(f in query, where: f.ordering <= ^ordering_next)
+          |> changeset.repo.update_all(inc: [ordering: 1])
+
+        ordering_current > ordering_next ->
+          from(f in query, where: f.ordering >= ^ordering_next and f.ordering < ^ordering_current)
+          |> changeset.repo.update_all(inc: [ordering: 1])
+
+        ordering_current < ordering_next ->
+          from(f in query, where: f.ordering <= ^ordering_next and f.ordering > ^ordering_current)
+          |> changeset.repo.update_all(inc: [ordering: -1])
+
+        true ->
+          nil
+      end
+
+      changeset
+    end)
+  end
+
   def changeset(struct, params) do
     struct
     |> cast(params, @allowed_fields)
@@ -82,6 +112,8 @@ defmodule Rehoboam.Schemas.Field do
     |> Rehoboam.Changeset.merge_localized_value(:description_i18n, params)
     |> Rehoboam.Changeset.merge_localized_value(:placeholder_i18n, params)
     |> Rehoboam.Changeset.merge_localized_value(:title_i18n, params)
+    |> constrain_ordering
+    |> adjust_ordering
     |> unique_constraint([:handle, :schema_id])
     |> validate_required(@required_fields)
   end
@@ -97,11 +129,21 @@ defmodule Rehoboam.Schemas.Field do
     |> validate_required([:handle])
   end
 
+  def constrain_ordering(cs) do
+    if ordering = get_change(cs, :ordering) do
+      schema_id = get_field(cs, :schema_id)
+      max = Rehoboam.Repo.one(from(f in Field, where: f.schema_id == ^schema_id, select: count())) - 1
+      put_change(cs, :ordering, Kernel.max(0, ordering) |> Kernel.min(max))
+    else
+      cs
+    end
+  end
+
   @spec ensure_handle_uniqueness(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def ensure_handle_uniqueness(cs) do
     schema_id = get_field(cs, :schema_id)
 
-    if (schema_id) do
+    if schema_id do
       Rehoboam.Changeset.ensure_field_uniqueness(
         cs,
         from(f in Rehoboam.Schemas.Field, where: f.schema_id == ^schema_id),
@@ -117,11 +159,13 @@ defmodule Rehoboam.Schemas.Field do
 
   def maybe_add_handle(cs, %{title_i18n: title}) when not is_nil(title) do
     title = Map.values(title) |> Enum.at(0)
+
     if get_field(cs, :handle) || is_nil(title) do
       cs
     else
       put_change(cs, :handle, Slugger.slugify_downcase(title, ?_))
     end
   end
+
   def maybe_add_handle(cs, _), do: cs
 end

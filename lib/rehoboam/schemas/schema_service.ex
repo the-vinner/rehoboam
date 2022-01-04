@@ -4,19 +4,23 @@ defmodule Rehoboam.Schemas.SchemaService do
   alias Rehoboam.Repo
   import Ecto.Query
 
-  def add_default_fields(changes) do
+  def add_default_fields(changes, user_id) do
     fields =
       Rehoboam.Schemas.FieldDefaults.list()
       |> Enum.filter(fn field ->
-        Enum.member?([
-          "title",
-          "description",
-          "images",
-          "thumbnails"
-        ], field.handle)
+        Enum.member?(
+          [
+            "title",
+            "description",
+            "images",
+            "thumbnails"
+          ],
+          field.handle
+        )
       end)
       |> Enum.with_index()
-      |> Enum.map(fn {f, i} -> Map.from_struct(%{f | ordering: i}) end)
+      |> Enum.map(fn {f, i} -> Map.from_struct(%{f | ordering: i, user_id: user_id}) end)
+
     Map.put(changes, :fields, fields)
   end
 
@@ -58,7 +62,7 @@ defmodule Rehoboam.Schemas.SchemaService do
       user_id: ctx.user.id
     }
     |> Schema.changeset(
-      add_default_fields(ctx.changes)
+      add_default_fields(ctx.changes, ctx.user.id)
     )
     |> Repo.insert()
   end
@@ -70,16 +74,17 @@ defmodule Rehoboam.Schemas.SchemaService do
 
   def query(%Service{} = ctx) do
     locale = ctx.locale || ctx.locale_default
+
     Schema
     |> search(ctx)
     |> where(
       ^(ctx.filters
         |> Map.to_list())
     )
-    |> order_by([
+    |> order_by(
       desc: fragment("title_i18n->>?", ^to_string(locale)),
       desc: :id
-    ])
+    )
   end
 
   def query(q, _args), do: q
