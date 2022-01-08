@@ -21,9 +21,12 @@ export default defineComponent({
             "rounded",
           ]}
         >
-          <div class="text-slate-500">
-            <FontAwesomeIcon icon={props.icon} />
-          </div>
+          {
+          props.icon &&
+            <div class="text-slate-500">
+              <FontAwesomeIcon icon={props.icon} />
+            </div>
+          }
           <div class="text-slate-800 text-sm">{props.title}</div>
           {
               slots.default && slots.default()

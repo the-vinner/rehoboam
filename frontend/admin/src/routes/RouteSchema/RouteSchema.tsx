@@ -113,12 +113,12 @@ export default defineComponent({
                 <div>
                   <FieldInput
                     inputClasses={["text-2xl"]}
-                    name="title"
+                    name="titleI18n"
                     placeholder="Content Type Title..."
                   />
                 </div>
                 <FieldTextarea
-                  name="description"
+                  name="descriptionI18n"
                   placeholder="Description..."
                 />
                 {!isNew.value && (

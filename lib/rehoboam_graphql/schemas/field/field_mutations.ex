@@ -15,5 +15,11 @@ defmodule RehoboamGraphQl.Schema.FieldMutations do
       middleware Potionx.Middleware.RolesAuthorization, [roles: [:admin]]
       resolve &Resolver.Field.mutation/2
     end
+
+    field :field_ordering_mutation, type: :field_mutation_many_result do
+      arg :fields, list_of(:field_update_input)
+      middleware Potionx.Middleware.RolesAuthorization, [roles: [:admin, :editor]]
+      resolve &Resolver.Field.mutation_ordering/2
+    end
   end
 end

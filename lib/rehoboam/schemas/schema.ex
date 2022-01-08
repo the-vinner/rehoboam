@@ -37,10 +37,10 @@ defmodule Rehoboam.Schemas.Schema do
     |> assoc_constraint(:image)
     |> assoc_constraint(:schema)
     |> assoc_constraint(:user)
-    |> maybe_add_handle()
-    |> ensure_handle_uniqueness
     |> Rehoboam.Changeset.merge_localized_value(:description_i18n, params)
     |> Rehoboam.Changeset.merge_localized_value(:title_i18n, params)
+    |> maybe_add_handle()
+    |> ensure_handle_uniqueness
     |> unique_constraint(:handle)
     |> validate_required(@required_fields)
   end
@@ -57,10 +57,11 @@ defmodule Rehoboam.Schemas.Schema do
     )
   end
 
-  def maybe_add_handle(%{changes: %{title: title}} = cs) when not is_nil(title) do
+  def maybe_add_handle(%{changes: %{title_i18n: title}} = cs) when not is_nil(title) do
     if get_field(cs, :handle) do
       cs
     else
+      title = Map.values(title) |> Enum.at(0)
       put_change(cs, :handle, Slugger.slugify_downcase(title, ?_))
     end
   end

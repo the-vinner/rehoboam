@@ -85,6 +85,16 @@ defmodule RehoboamGraphQl.Resolver.Field do
     end
   end
 
+  def mutation_ordering(_args, %{context: %Service{} = ctx}) do
+    FieldService.mutation_ordering(ctx)
+    |> case do
+      {:error, _, msg, _} ->
+        {:error, msg}
+      {:ok, %{fields: nodes}} ->
+        {:ok, %{nodes: nodes}}
+    end
+  end
+
   def one(_, %{context: %Service{} = ctx}) do
     {:ok, FieldService.one(ctx)}
   end

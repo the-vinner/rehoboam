@@ -50,6 +50,36 @@ defmodule Rehoboam.Schemas.FieldService do
     |> Repo.insert
   end
 
+  def mutation_ordering(%Service{changes: %{fields: fields}}) do
+    field_map = Enum.into(fields, %{}, fn p ->
+      {to_string(p.id), p.ordering}
+    end)
+    Multi.new
+    |> Multi.run(:fields_update, fn _, _ ->
+      from(p in Field)
+      |> where([f], f.id in ^Map.keys(field_map))
+      |> Repo.all
+      |> Enum.map(fn f ->
+        f
+        |> Field.changeset(%{
+          ordering: Map.get(field_map, to_string(f.id))
+        })
+        |> Repo.update
+      end)
+      |> Potionx.Utils.Ecto.reduce_results
+    end)
+    |> Multi.run(:fields, fn _, %{fields_update: fields} ->
+      %{schema_id: schema_id} = Enum.at(fields, 0)
+
+      update_ordering(
+        from(q in Field)
+        |> where([q], q.schema_id == ^schema_id)
+      )
+      |> Potionx.Utils.Ecto.reduce_results
+    end)
+    |> Repo.transaction
+  end
+
   def one(%Service{} = ctx) do
     query(ctx)
     |> Repo.one
@@ -64,7 +94,7 @@ defmodule Rehoboam.Schemas.FieldService do
         |> Map.to_list
       )
     )
-    |> order_by([desc: :id])
+    |> order_by([asc: :ordering, desc: :id])
   end
   def query(q, _args), do: q
 
@@ -88,5 +118,25 @@ defmodule Rehoboam.Schemas.FieldService do
         end
       end)
     from(query, where: ^clauses)
+  end
+
+  def update_ordering(query, field \\ nil) do
+    query
+    |> exclude(:order_by)
+    |> order_by([asc: :ordering])
+    |> Repo.all
+    |> (fn res ->
+      case field do
+        nil -> res
+        field ->
+          List.insert_at(res, field.ordering, field)
+      end
+    end).()
+    |> Enum.with_index
+    |> Enum.map(fn {val, ordering} ->
+      val
+      |> Field.changeset(%{ordering: ordering})
+      |> Repo.update
+    end)
   end
 end

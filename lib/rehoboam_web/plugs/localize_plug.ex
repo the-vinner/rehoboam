@@ -8,8 +8,8 @@ defmodule Rehoboam.Plugs.Localize do
 
     Plug.Conn.assign(conn, :context, %{
       ctx
-      | locale: default_locale,
-        locale_default: default_locale
+      | locale: default_locale.locale,
+        locale_default: default_locale.locale
     })
   end
 end

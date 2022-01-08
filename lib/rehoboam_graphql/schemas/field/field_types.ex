@@ -28,7 +28,7 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
 
   node object :field do
     field :deleted_at, :datetime
-    field :description_i18n, :json
+    field :description_i18n, :string, resolve: RehoboamGraphQl.Resolver.localize(:description_i18n)
     field :file, :file, resolve: dataloader(RehoboamGraphQl.Resolver.Field)
     field :file_id, :id
     field :handle, :string
@@ -48,7 +48,7 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
     field :placeholder_i18n, :json
     field :schema, :field, resolve: dataloader(RehoboamGraphQl.Resolver.Field)
     field :schema_id, :id
-    field :title_i18n, :json
+    field :title_i18n, :string, resolve: RehoboamGraphQl.Resolver.localize(:title_i18n)
     field :type, :field_types
     field :updated_at, :naive_datetime
     field :user, :user, resolve: dataloader(RehoboamGraphQl.Resolver.Field)
@@ -112,10 +112,20 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
   input_object :field_filters_single do
     field :id, non_null(:global_id)
   end
+  input_object :field_update_input do
+    field :id, non_null(:global_id)
+    field :ordering, non_null(:integer)
+  end
   object :field_mutation_result do
     field :errors, list_of(:string)
     field :errors_fields, list_of(:error)
     field :node, :field
+    field :success_msg, :string
+  end
+  object :field_mutation_many_result do
+    field :errors, list_of(:string)
+    field :errors_fields, list_of(:error)
+    field :nodes, list_of(:field)
     field :success_msg, :string
   end
 end

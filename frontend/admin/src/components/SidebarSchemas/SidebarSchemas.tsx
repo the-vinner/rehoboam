@@ -43,7 +43,7 @@ export default defineComponent({
                       "text-sm",
                     ]}
                   >
-                    <div>{edge.node.title}</div>
+                    <div>{edge.node.titleI18n}</div>
                     <router-link
                       class={[
                         "group-hover:opacity-100",

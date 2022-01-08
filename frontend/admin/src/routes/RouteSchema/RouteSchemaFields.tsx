@@ -1,79 +1,58 @@
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import {
-  faAlignLeft,
-  faHeading,
-  faImage,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@potionapps/utils";
 import {
+  FieldUpdateInput,
   RootMutationType,
-  RootMutationTypeSchemaMutationArgs,
-  Schema,
 } from "shared/types";
 import { useMutation } from "@urql/vue";
 import { useRoute } from "vue-router";
 import BtnSmallBordered from "components/Btn/BtnSmallBordered";
-import SchemaFieldRow from "components/SchemaFieldRow/SchemaFieldRow";
+import Draggable from 'vuedraggable/src/vuedraggable'
 import schemaMutation from "shared/models/Schemas/Schema/schemaMutation.gql";
-import SwitchSmall from "components/Switch/SwitchSmall";
 import Title from "components/Title/Title";
-import useSchemaSingle from "hooks/useSchemaSingle";
+import fieldCollection from 'shared/models/Schemas/Field/fieldCollection.gql'
+import useQueryTyped from "hooks/useQueryTyped";
+import SchemaFieldRow from "components/SchemaFieldRow/SchemaFieldRow";
+import { SchemaField } from "@urql/exchange-graphcache/dist/types/ast";
 
 export default defineComponent({
   name: "RouteSchemaFields",
   setup() {
-    const { executeMutation } = useMutation<RootMutationType>(schemaMutation);
+    const draggableState = ref<SchemaField[]>([])
     const route = useRoute();
-    const { schema } = useSchemaSingle();
-    const defaultFields = [
-      {
-        icon: faHeading,
-        name: "title",
-        title: "Title",
-        toggleName: "enableTitle",
-      },
-      {
-        icon: faAlignLeft,
-        name: "description",
-        title: "Description",
-        toggleName: "enableDescription",
-      },
-      {
-        icon: faImage,
-        name: "image",
-        title: "Images",
-        toggleName: "enableImage",
-      },
-      {
-        icon: faImage,
-        name: "thumbnail",
-        title: "Thumbnails",
-        toggleName: "enableThumbnail",
-      },
-    ];
-    const defaultFieldsDisabled = computed(() => {
-      return defaultFields.filter(
-        (s) => schema.value && schema.value?.[s.toggleName as keyof Schema]
-      );
-    });
-    const defaultFieldsEnabled = computed(() => {
-      return defaultFields.filter(
-        (s) => schema.value?.[s.toggleName as keyof Schema]
-      );
-    });
+    let toSave : FieldUpdateInput[] = []
 
-    const toggleUpdate = (key: keyof Schema, value: boolean) => {
-      const vars: RootMutationTypeSchemaMutationArgs = {
-        changes: {
-          [key]: value,
-        },
-        filters: {
-          id: route.params.id,
-        },
-      };
-      executeMutation(vars);
-    };
+    const {
+      data
+    } = useQueryTyped({
+      query: fieldCollection,
+      variables: computed(() => {
+        return {
+          first: 200,
+          filters: {
+            schemaId: route.params.id
+          }
+        }
+      })
+    })
+
+    // const onChange = (res: {moved: {element: PlaylistPage, newIndex: number, oldIndex: number}}) => {
+    //   toSave =
+    //     draggableState.value.reduce((acc: PlaylistPageManyUpdateInput[], pp, i) => {
+    //       if (i !== props.playlistPages?.find(pp2 => pp2.id === pp.id)?.ordering) {
+    //         acc.push({
+    //           id: pp.id,
+    //           ordering: i
+    //         })
+    //       }
+    //       return acc
+    //     }, [])
+    //   showSavebar.value = !!toSave.length
+    // }
+
     return () => {
       return <>
         <div class="flex items-center justify-between mb-3">
@@ -96,45 +75,13 @@ export default defineComponent({
             "w-full",
           ]}
         >
-          {defaultFieldsEnabled.value.map((field) => {
-            return (
-              <SchemaFieldRow
-                key={field.name}
-                icon={field.icon}
-                title={field.title}
-              >
-                <div class="flex grow justify-end">
-                  <SwitchSmall
-                    change={(val) =>
-                      toggleUpdate(field.toggleName as keyof Schema, val)
-                    }
-                    val={!!schema.value?.[field.toggleName as keyof Schema]}
-                  />
-                </div>
-              </SchemaFieldRow>
-            );
-          })}
-          <div class="mt-6 mb-1 text-lg text-slate-800">
-            Disabled Default Fields
-          </div>
-          {defaultFieldsDisabled.value.map((field) => {
-            return (
-              <SchemaFieldRow
-                key={field.name}
-                icon={field.icon}
-                title={field.title}
-              >
-                <div class="flex grow justify-end">
-                  <SwitchSmall
-                    change={(val) =>
-                      toggleUpdate(field.toggleName as keyof Schema, val)
-                    }
-                    val={!!schema.value?.[field.toggleName as keyof Schema]}
-                  />
-                </div>
-              </SchemaFieldRow>
-            );
-          })}
+          {
+            data.value?.fieldCollection?.edges?.map(edge => {
+              if (edge?.node) {
+                return <SchemaFieldRow title={edge?.node?.titleI18n} />
+              }
+            })
+          }
         </div>
       </>;
     };

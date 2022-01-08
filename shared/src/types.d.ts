@@ -23,6 +23,7 @@ export type Scalars = {
    * human-readable json string.
    */
   Json: any;
+  Localized: any;
   /**
    * The `Naive DateTime` scalar type represents a naive date and time without
    * timezone. The DateTime appears in a JSON response as an ISO8601 formatted
@@ -38,6 +39,151 @@ export type Error = {
   __typename?: 'Error';
   field?: Maybe<Scalars['String']>;
   message?: Maybe<Scalars['String']>;
+};
+
+export type Field = Node & {
+  __typename?: 'Field';
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  descriptionI18n?: Maybe<Scalars['String']>;
+  file?: Maybe<File>;
+  fileId?: Maybe<Scalars['ID']>;
+  handle?: Maybe<Scalars['String']>;
+  /** The ID of an object */
+  id: Scalars['ID'];
+  image?: Maybe<File>;
+  imageId?: Maybe<Scalars['ID']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  internalId?: Maybe<Scalars['ID']>;
+  isBody?: Maybe<Scalars['Boolean']>;
+  isDescription?: Maybe<Scalars['Boolean']>;
+  isImage?: Maybe<Scalars['Boolean']>;
+  isLocation?: Maybe<Scalars['Boolean']>;
+  isThumbnail?: Maybe<Scalars['Boolean']>;
+  isTime?: Maybe<Scalars['Boolean']>;
+  isTitle?: Maybe<Scalars['Boolean']>;
+  meta?: Maybe<Scalars['Json']>;
+  ordering?: Maybe<Scalars['Int']>;
+  placeholderI18n?: Maybe<Scalars['Json']>;
+  schema?: Maybe<Field>;
+  schemaId?: Maybe<Scalars['ID']>;
+  titleI18n?: Maybe<Scalars['String']>;
+  type?: Maybe<FieldTypes>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['ID']>;
+  validations?: Maybe<Scalars['Json']>;
+};
+
+export type FieldConnection = {
+  __typename?: 'FieldConnection';
+  count: Scalars['Int'];
+  countBefore: Scalars['Int'];
+  edges?: Maybe<Array<Maybe<FieldEdge>>>;
+  pageInfo: PageInfo;
+};
+
+export type FieldEdge = {
+  __typename?: 'FieldEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Field>;
+};
+
+export type FieldFilters = {
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  descriptionI18n?: Maybe<Scalars['Json']>;
+  fileId?: Maybe<Scalars['GlobalId']>;
+  handle?: Maybe<Scalars['String']>;
+  imageId?: Maybe<Scalars['GlobalId']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  isBody?: Maybe<Scalars['Boolean']>;
+  isDescription?: Maybe<Scalars['Boolean']>;
+  isImage?: Maybe<Scalars['Boolean']>;
+  isLocation?: Maybe<Scalars['Boolean']>;
+  isThumbnail?: Maybe<Scalars['Boolean']>;
+  isTime?: Maybe<Scalars['Boolean']>;
+  isTitle?: Maybe<Scalars['Boolean']>;
+  meta?: Maybe<Scalars['Json']>;
+  ordering?: Maybe<Scalars['Int']>;
+  placeholderI18n?: Maybe<Scalars['Json']>;
+  schemaId: Scalars['GlobalId'];
+  titleI18n?: Maybe<Scalars['Json']>;
+  type?: Maybe<FieldTypes>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  userId?: Maybe<Scalars['GlobalId']>;
+  validations?: Maybe<Scalars['Json']>;
+};
+
+export type FieldFiltersSingle = {
+  id: Scalars['GlobalId'];
+};
+
+export type FieldInput = {
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  descriptionI18n?: Maybe<Scalars['Json']>;
+  fileId?: Maybe<Scalars['GlobalId']>;
+  handle?: Maybe<Scalars['String']>;
+  imageId?: Maybe<Scalars['GlobalId']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']>;
+  isBody?: Maybe<Scalars['Boolean']>;
+  isDescription?: Maybe<Scalars['Boolean']>;
+  isImage?: Maybe<Scalars['Boolean']>;
+  isLocation?: Maybe<Scalars['Boolean']>;
+  isThumbnail?: Maybe<Scalars['Boolean']>;
+  isTime?: Maybe<Scalars['Boolean']>;
+  isTitle?: Maybe<Scalars['Boolean']>;
+  meta?: Maybe<Scalars['Json']>;
+  ordering?: Maybe<Scalars['Int']>;
+  placeholderI18n?: Maybe<Scalars['Json']>;
+  schemaId?: Maybe<Scalars['GlobalId']>;
+  titleI18n?: Maybe<Scalars['Json']>;
+  type?: Maybe<FieldTypes>;
+  updatedAt?: Maybe<Scalars['NaiveDateTime']>;
+  userId?: Maybe<Scalars['GlobalId']>;
+  validations?: Maybe<Scalars['Json']>;
+};
+
+export type FieldMutationManyResult = {
+  __typename?: 'FieldMutationManyResult';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  errorsFields?: Maybe<Array<Maybe<Error>>>;
+  nodes?: Maybe<Array<Maybe<Field>>>;
+  successMsg?: Maybe<Scalars['String']>;
+};
+
+export type FieldMutationResult = {
+  __typename?: 'FieldMutationResult';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  errorsFields?: Maybe<Array<Maybe<Error>>>;
+  node?: Maybe<Field>;
+  successMsg?: Maybe<Scalars['String']>;
+};
+
+export enum FieldTypes {
+  Boolean = 'BOOLEAN',
+  Checkbox = 'CHECKBOX',
+  Custom = 'CUSTOM',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Email = 'EMAIL',
+  Files = 'FILES',
+  Images = 'IMAGES',
+  Location = 'LOCATION',
+  Number = 'NUMBER',
+  Phone = 'PHONE',
+  Price = 'PRICE',
+  Radio = 'RADIO',
+  Relationships = 'RELATIONSHIPS',
+  Select = 'SELECT',
+  Text = 'TEXT',
+  TextLong = 'TEXT_LONG',
+  TextRich = 'TEXT_RICH',
+  Time = 'TIME',
+  Url = 'URL'
+}
+
+export type FieldUpdateInput = {
+  id: Scalars['GlobalId'];
+  ordering: Scalars['Int'];
 };
 
 export type File = Node & {
@@ -108,6 +254,7 @@ export type FileMutationResult = {
 
 
 
+
 export type Node = {
   /** The ID of the object. */
   id: Scalars['ID'];
@@ -127,6 +274,9 @@ export type PageInfo = {
 
 export type RootMutationType = {
   __typename?: 'RootMutationType';
+  fieldDelete?: Maybe<FieldMutationResult>;
+  fieldMutation?: Maybe<FieldMutationResult>;
+  fieldOrderingMutation?: Maybe<FieldMutationManyResult>;
   fileDelete?: Maybe<FileMutationResult>;
   fileMutation?: Maybe<FileMutationResult>;
   schemaDelete?: Maybe<SchemaMutationResult>;
@@ -137,6 +287,22 @@ export type RootMutationType = {
   userDelete?: Maybe<UserMutationResult>;
   userMeMutation?: Maybe<UserMutationResult>;
   userMutation?: Maybe<UserMutationResult>;
+};
+
+
+export type RootMutationTypeFieldDeleteArgs = {
+  filters?: Maybe<FieldFiltersSingle>;
+};
+
+
+export type RootMutationTypeFieldMutationArgs = {
+  changes?: Maybe<FieldInput>;
+  filters?: Maybe<FieldFiltersSingle>;
+};
+
+
+export type RootMutationTypeFieldOrderingMutationArgs = {
+  fields?: Maybe<Array<Maybe<FieldUpdateInput>>>;
 };
 
 
@@ -186,6 +352,8 @@ export type RootMutationTypeUserMutationArgs = {
 
 export type RootQueryType = {
   __typename?: 'RootQueryType';
+  fieldCollection?: Maybe<FieldConnection>;
+  fieldSingle?: Maybe<Field>;
   fileCollection?: Maybe<FileConnection>;
   fileSingle?: Maybe<File>;
   me?: Maybe<User>;
@@ -195,6 +363,22 @@ export type RootQueryType = {
   userPublicCollection?: Maybe<UserPublicConnection>;
   userPublicSingle?: Maybe<UserPublic>;
   userSingle?: Maybe<User>;
+};
+
+
+export type RootQueryTypeFieldCollectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  filters: FieldFilters;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  order?: Maybe<SortOrder>;
+  search?: Maybe<Scalars['String']>;
+};
+
+
+export type RootQueryTypeFieldSingleArgs = {
+  filters?: Maybe<FieldFiltersSingle>;
 };
 
 
@@ -264,17 +448,7 @@ export type RootQueryTypeUserSingleArgs = {
 export type Schema = Node & {
   __typename?: 'Schema';
   deletedAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['Json']>;
-  enableDescription?: Maybe<Scalars['Boolean']>;
-  enableEndAt?: Maybe<Scalars['Boolean']>;
-  enableFile?: Maybe<Scalars['Boolean']>;
-  enableImage?: Maybe<Scalars['Boolean']>;
-  enableLocation?: Maybe<Scalars['Boolean']>;
-  enablePrice?: Maybe<Scalars['Boolean']>;
-  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
-  enableStartAt?: Maybe<Scalars['Boolean']>;
-  enableThumbnail?: Maybe<Scalars['Boolean']>;
-  enableTitle?: Maybe<Scalars['Boolean']>;
+  descriptionI18n?: Maybe<Scalars['String']>;
   file?: Maybe<File>;
   fileId?: Maybe<Scalars['ID']>;
   handle?: Maybe<Scalars['String']>;
@@ -288,7 +462,7 @@ export type Schema = Node & {
   schema?: Maybe<Schema>;
   schemaId?: Maybe<Scalars['ID']>;
   slug?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['Json']>;
+  titleI18n?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;
   user?: Maybe<User>;
   userId?: Maybe<Scalars['ID']>;
@@ -310,17 +484,7 @@ export type SchemaEdge = {
 
 export type SchemaFilters = {
   deletedAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['Json']>;
-  enableDescription?: Maybe<Scalars['Boolean']>;
-  enableEndAt?: Maybe<Scalars['Boolean']>;
-  enableFile?: Maybe<Scalars['Boolean']>;
-  enableImage?: Maybe<Scalars['Boolean']>;
-  enableLocation?: Maybe<Scalars['Boolean']>;
-  enablePrice?: Maybe<Scalars['Boolean']>;
-  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
-  enableStartAt?: Maybe<Scalars['Boolean']>;
-  enableThumbnail?: Maybe<Scalars['Boolean']>;
-  enableTitle?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
   fileId?: Maybe<Scalars['GlobalId']>;
   handle?: Maybe<Scalars['String']>;
   insertedAt?: Maybe<Scalars['NaiveDateTime']>;
@@ -329,7 +493,7 @@ export type SchemaFilters = {
   publishedAt?: Maybe<Scalars['DateTime']>;
   schemaId?: Maybe<Scalars['GlobalId']>;
   slug?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['Json']>;
+  title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;
   userId?: Maybe<Scalars['GlobalId']>;
 };
@@ -340,17 +504,7 @@ export type SchemaFiltersSingle = {
 
 export type SchemaInput = {
   deletedAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['Json']>;
-  enableDescription?: Maybe<Scalars['Boolean']>;
-  enableEndAt?: Maybe<Scalars['Boolean']>;
-  enableFile?: Maybe<Scalars['Boolean']>;
-  enableImage?: Maybe<Scalars['Boolean']>;
-  enableLocation?: Maybe<Scalars['Boolean']>;
-  enablePrice?: Maybe<Scalars['Boolean']>;
-  enablePriceCompareAt?: Maybe<Scalars['Boolean']>;
-  enableStartAt?: Maybe<Scalars['Boolean']>;
-  enableThumbnail?: Maybe<Scalars['Boolean']>;
-  enableTitle?: Maybe<Scalars['Boolean']>;
+  descriptionI18n?: Maybe<Scalars['Localized']>;
   fileId?: Maybe<Scalars['GlobalId']>;
   handle?: Maybe<Scalars['String']>;
   insertedAt?: Maybe<Scalars['NaiveDateTime']>;
@@ -359,7 +513,7 @@ export type SchemaInput = {
   publishedAt?: Maybe<Scalars['DateTime']>;
   schemaId?: Maybe<Scalars['GlobalId']>;
   slug?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['Json']>;
+  titleI18n?: Maybe<Scalars['Localized']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;
   userId?: Maybe<Scalars['GlobalId']>;
 };
