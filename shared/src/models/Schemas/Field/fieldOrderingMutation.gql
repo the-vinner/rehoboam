@@ -1,0 +1,19 @@
+mutation fieldOrderingMutation(
+    $fields: [FieldUpdateInput]
+) {
+  fieldOrderingMutation(
+    fields: $fields
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    nodes {
+      __typename
+      id
+      internalId
+      ordering
+    }
+  }
+}

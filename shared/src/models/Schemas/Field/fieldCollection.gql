@@ -3,7 +3,7 @@ query fieldCollection(
   $before: String,
   $first: Int,
   $last: Int,
-  $filters: FieldFilters,
+  $filters: FieldFilters!,
   $search: String
 ) {
   fieldCollection(

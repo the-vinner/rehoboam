@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@potionapps/utils";
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   props: {
     icon: Object,
-    title: String,
+    title: String as PropType<null | string>,
   },
   setup(props, { slots }) {
     return () => {

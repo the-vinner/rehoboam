@@ -3,6 +3,7 @@ defmodule Rehoboam.Schemas.FieldService do
   alias Rehoboam.Schemas.Field
   alias Rehoboam.Repo
   import Ecto.Query
+  alias Ecto.Multi
 
   def count(%Service{} = ctx) do
     from(item in query(ctx))
@@ -12,8 +13,8 @@ defmodule Rehoboam.Schemas.FieldService do
   end
 
   def delete(%Service{} = ctx) do
-    Ecto.Multi.new
-    |> Ecto.Multi.run(:field, fn _, _ ->
+    Multi.new
+    |> Multi.run(:field, fn _, _ ->
       query(ctx)
       |> Repo.one
       |> case do
@@ -23,7 +24,7 @@ defmodule Rehoboam.Schemas.FieldService do
           |> Repo.delete
       end
     end)
-    |> Ecto.Multi.run(:fields_ordering, fn repo, %{field: field} ->
+    |> Multi.run(:fields_ordering, fn repo, %{field: field} ->
       from(f in Field, where: [schema_id: ^field.schema_id])
       |> where([f], f.ordering > ^field.ordering)
       |> repo.update_all(inc: [ordering: -1])
