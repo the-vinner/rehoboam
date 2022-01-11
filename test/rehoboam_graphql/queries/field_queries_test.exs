@@ -29,6 +29,29 @@ defmodule RehoboamGraphQl.Schema.FieldQueryTest do
       end).()
     end
     test "returns single field", %{ctx: ctx, entry: entry} do
+
+      """
+      type Query {
+        "A list of posts"
+        posts(reverse: Boolean): [Post]
+      }
+      type Post {
+        id: String
+        title: String!
+      }
+      """
+      |> RehoboamGraphQl.Schema.rebuild()
+
+      """
+      query posts {
+        posts {
+          id
+        }
+      }
+      """
+      |> Absinthe.run(RehoboamGraphQl.Schema)
+      |> IO.inspect(label: "result")
+
       File.read!("shared/src/models/Schemas/Field/fieldSingle.gql")
       |> Absinthe.run(
         RehoboamGraphQl.Schema,

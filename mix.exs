@@ -33,7 +33,7 @@ defmodule Rehoboam.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:absinthe, "~> 1.6.0"},
+      {:absinthe, git: "https://github.com/the-vinner/absinthe", ref: "master", override: true},
       {:absinthe_phoenix, "~> 2.0.2"},
       {:absinthe_plug, "~> 1.5"},
       {:absinthe_relay, "~> 1.5.0"},
