@@ -12,14 +12,37 @@ defmodule Rehoboam.Application do
       Rehoboam.Repo,
       # Start the Telemetry supervisor
       RehoboamWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: Rehoboam.PubSub},
+      # Start the PubSub system
       {Finch, name: RehoboamFinch},
       {Absinthe.Schema, RehoboamGraphQl.Schema},
       # Start the Endpoint (http/https)
-      RehoboamWeb.Endpoint
+      RehoboamWeb.Endpoint,
       # Start a worker by calling: Rehoboam.Worker.start_link(arg)
-      # {Rehoboam.Worker, arg}
+      # {Rehoboam.Worker, arg},
+      # Task.child_spec(fn ->
+      #   """
+      #   type Query {
+      #     "A list of posts"
+      #     posts(reverse: Boolean): [Post]
+      #   }
+      #   type Post {
+      #     id: String
+      #     title: String!
+      #   }
+      #   """
+      #   |> RehoboamGraphQl.Schema.rebuild()
+
+      #   """
+      #   query posts {
+      #     posts {
+      #       id
+      #     }
+      #   }
+      #   """
+      #   |> Absinthe.run(RehoboamGraphQl.Schema)
+      #   |> IO.inspect(label: "result")
+      # end)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

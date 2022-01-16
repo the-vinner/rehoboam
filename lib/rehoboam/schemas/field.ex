@@ -147,10 +147,10 @@ defmodule Rehoboam.Schemas.Field do
       Rehoboam.Changeset.ensure_field_uniqueness(
         cs,
         from(f in Rehoboam.Schemas.Field, where: f.schema_id == ^schema_id),
-        %{
+        [
           field: :handle,
           separator: "_"
-        }
+        ]
       )
     else
       cs

@@ -45,14 +45,14 @@ defmodule RehoboamGraphQl.Schema do
     @prototype_schema
   end
 
-  def hydrate(%Absinthe.Blueprint.Schema.FieldDefinition{identifier: :posts}, [%Absinthe.Blueprint.Schema.ObjectTypeDefinition{identifier: :query} | _]) do
-    {:resolve, &__MODULE__.health/3}
+  def hydrate(%Absinthe.Blueprint.Schema.FieldDefinition{identifier: id}, [%Absinthe.Blueprint.Schema.ObjectTypeDefinition{identifier: :query} | _]) do
+    {:resolve, &__MODULE__.queries/3}
   end
   def hydrate(_node, _ancestors), do: []
 
   # Resolver implementation:
-  def health(a, b, c) do
-    {:ok, %{id: "niner"}}
+  def queries(a, b, c) do
+    {:ok, %{id: "1"}}
   end
 
   node interface do

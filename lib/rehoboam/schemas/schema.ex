@@ -50,10 +50,10 @@ defmodule Rehoboam.Schemas.Schema do
     Rehoboam.Changeset.ensure_field_uniqueness(
       cs,
       Rehoboam.Schemas.Schema,
-      %{
+      [
         field: :handle,
         separator: "_"
-      }
+      ]
     )
   end
 

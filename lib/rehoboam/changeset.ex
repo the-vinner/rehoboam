@@ -26,7 +26,7 @@ defmodule Rehoboam.Changeset do
         cs
 
       change ->
-        change = Slugger.slugify_downcase(change)
+        change = Slugger.slugify_downcase(change, sep)
 
         from(m in query)
         |> select([q], %{

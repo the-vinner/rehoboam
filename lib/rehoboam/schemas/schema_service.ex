@@ -44,6 +44,12 @@ defmodule Rehoboam.Schemas.SchemaService do
     end
   end
 
+  def get_published_schemas do
+    from(s in Schema, where: s.is_latest)
+    |> preload(:fields)
+    |> Repo.all()
+  end
+
   def mutation(%Service{filters: %{id: id}} = ctx) when not is_nil(id) do
     query(ctx)
     |> Repo.one()
