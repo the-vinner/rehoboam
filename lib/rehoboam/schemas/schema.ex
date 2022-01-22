@@ -13,7 +13,7 @@ defmodule Rehoboam.Schemas.Schema do
 
     belongs_to(:icon, Rehoboam.Assets.File)
     belongs_to(:image, Rehoboam.Assets.File)
-    belongs_to(:schema, Rehoboam.Schemas.Schema)
+    belongs_to :schema, Rehoboam.Schemas.Schema, foreign_key: :master_schema_id
     belongs_to(:user, Rehoboam.Users.User)
     has_many :fields, Rehoboam.Schemas.Field
     timestamps()
@@ -50,10 +50,8 @@ defmodule Rehoboam.Schemas.Schema do
     Rehoboam.Changeset.ensure_field_uniqueness(
       cs,
       Rehoboam.Schemas.Schema,
-      [
-        field: :handle,
-        separator: "_"
-      ]
+      field: :handle,
+      separator: "_"
     )
   end
 

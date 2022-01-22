@@ -9,7 +9,7 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemasTable do
       add :image_id, references(:files, on_delete: :nilify_all)
       add :handle, :string
       add :private, :boolean, default: true
-      add :schema_id, references(:schemas, on_delete: :delete_all)
+      add :master_schema_id, references(:schemas, on_delete: :delete_all)
       add :title_i18n, :map
       add :user_id, references(:users)
       add(:is_latest, :boolean, default: false)

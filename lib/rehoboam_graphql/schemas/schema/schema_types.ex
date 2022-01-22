@@ -42,7 +42,7 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :is_latest, :boolean
     field :private, :boolean
     field :published_at, :datetime
-    field :schema_id, :global_id
+    field :master_schema_id, :global_id
     field :slug, :string
     field :title, :string
     field :updated_at, :naive_datetime
@@ -58,7 +58,7 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :is_latest, :boolean
     field :private, :boolean
     field :published_at, :datetime
-    field :schema_id, :global_id
+    field :master_schema_id, :global_id
     field :slug, :string
     field :title_i18n, :localized
     field :updated_at, :naive_datetime
