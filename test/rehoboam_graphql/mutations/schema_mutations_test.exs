@@ -124,7 +124,7 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
         |> preload([:fields])
         |> Repo.one
         |> then(fn res ->
-          asset Enum.count(res.fields) === 4
+          assert Enum.count(res.fields) === 4
         end)
       end)
     end

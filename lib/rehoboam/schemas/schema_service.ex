@@ -39,11 +39,14 @@ defmodule Rehoboam.Schemas.SchemaService do
     |> Map.drop([
       :user
     ])
-    |> Ecto.Changeset.cast(%{
-      fields: prep_fields(schema.fields),
-    }, [])
+    |> Ecto.Changeset.cast(
+      %{
+        fields: prep_fields(schema.fields)
+      },
+      []
+    )
     |> Ecto.Changeset.cast_assoc(:fields, with: &Rehoboam.Schemas.Field.changeset_cast/2)
-    |> Repo.insert
+    |> Repo.insert()
   end
 
   def count(%Service{} = ctx) do
@@ -137,11 +140,19 @@ defmodule Rehoboam.Schemas.SchemaService do
   def query(%Service{} = ctx) do
     locale = ctx.locale || ctx.locale_default
 
-    Schema
-    |> search(ctx)
+    Enum.reduce(ctx.filters, search(Schema, ctx),
+      fn
+        {:published, false}, q ->
+          where(q, [q], is_nil(q.master_schema_id))
+        {:published, true}, q ->
+          where(q, [q], not is_nil(q.master_schema_id))
+        _, q -> q
+    end)
     |> where(
-      ^(ctx.filters
-        |> Map.to_list())
+      ^(
+        Map.take(ctx.filters, [:latest])
+        |> Map.to_list()
+      )
     )
     |> order_by(
       desc: fragment("title_i18n->>?", ^to_string(locale)),
