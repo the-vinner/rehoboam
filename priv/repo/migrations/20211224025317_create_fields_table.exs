@@ -18,6 +18,7 @@ defmodule Rehoboam.Repo.Migrations.CreateFieldsTable do
       add :is_thumbnail, :boolean
       add :is_time, :boolean
       add :is_title, :boolean
+      add :master_field_id, references(:fields, on_delete: :delete_all)
       add :meta, :map
       add :placeholder_i18n, :map
       add :title_i18n, :map

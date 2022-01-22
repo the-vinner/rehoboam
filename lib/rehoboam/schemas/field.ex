@@ -46,6 +46,7 @@ defmodule Rehoboam.Schemas.Field do
         :url
       ]
 
+    belongs_to :field, __MODULE__, foreign_key: :master_field_id
     belongs_to :file, Rehoboam.Assets.File
     belongs_to :schema, Rehoboam.Schemas.Field
     belongs_to :image, Rehoboam.Assets.File
