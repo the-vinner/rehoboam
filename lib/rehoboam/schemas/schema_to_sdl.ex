@@ -17,7 +17,7 @@ defmodule Rehoboam.Schemas.SchemaToSdl do
     end
   end
 
-  @spec generate_sdl(list(Schema.t())) :: String.t()
+  @spec generate_sdl(list(Schema.t())) :: Absinthe.Language.Source.t() | Absinthe.Language.Blueprint.t()
   def generate_sdl(schemas) do
     Enum.reduce(
       schemas,
@@ -45,39 +45,36 @@ defmodule Rehoboam.Schemas.SchemaToSdl do
     "#{Rehoboam.Utils.Text.camelize(handle)}: #{field_type_to_graphql(type)}"
   end
 
-  def generate_input_sdl_for_schema(%Schema{handle: handle, schema_id: master_id}) do
+  def generate_input_sdl_for_schema(%Schema{handle: _handle, master_schema_id: _master_id}) do
     []
   end
 
-  def generate_query_sdl_for_schema(%Schema{handle: handle, schema_id: master_id}) do
+  def generate_query_sdl_for_schema(%Schema{handle: handle, master_schema_id: master_id}) do
     [
       "# Query Schema##{to_string(master_id)}",
       Rehoboam.Utils.Text.camelize(handle) <> "Collection: [#{handle_to_type(handle)}]",
-      Rehoboam.Utils.Text.camelize(handle) <> ": #{handle_to_type(handle)}",
+      Rehoboam.Utils.Text.camelize(handle) <> ": #{handle_to_type(handle)}"
     ]
   end
 
-  def generate_type_sdl_for_schema(%Schema{fields: fields, handle: handle, schema_id: master_id}) do
+  def generate_type_sdl_for_schema(%Schema{fields: fields, handle: handle, master_schema_id: master_id}) do
     [
       "# Type Schema##{to_string(master_id)}",
       """
       type #{handle_to_type(handle)} {
         id: ID
         internalId: ID
-        #{
-          Enum.map_join(
-            fields,
-            "\n",
-            &generate_field_sdl/1
-          )
-        }
+        #{Enum.map_join(fields,
+      "\n",
+      &generate_field_sdl/1)}
       }
       """
     ]
   end
+
   def handle_to_type(handle), do: Macro.camelize(handle)
 
-  @spec run() :: {:ok, String.t()} | {:error, String.t()}
+  @spec run() :: Absinthe.Language.Source.t() | Absinthe.Language.Blueprint.t()
   def run do
     SchemaService.get_published_schemas()
     |> generate_sdl()

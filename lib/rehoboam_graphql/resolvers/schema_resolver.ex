@@ -94,6 +94,18 @@ defmodule RehoboamGraphQl.Resolver.Schema do
   end
 
   def one(_, %{context: %Service{} = ctx}) do
-    {:ok, SchemaService.one(ctx)}
+    SchemaService.one(ctx)
+  end
+
+  @spec publish(any, %{:context => Potionx.Context.Service.t(), optional(any) => any}) :: any
+  def publish(_, %{context: %Service{} = ctx}) do
+    SchemaService.publish(ctx)
+    |> case do
+      {:ok, %{schema_master: master}} ->
+        Rehoboam.Schemas.SchemaToSdl.run()
+        |> RehoboamGraphQl.Schema.rebuild()
+        {:ok, master}
+      err -> err
+    end
   end
 end

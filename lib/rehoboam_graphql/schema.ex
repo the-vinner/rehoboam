@@ -199,6 +199,7 @@ defmodule RehoboamGraphQl.Schema do
     List.replace_at(definitions, index, parent)
   end
 
+  @spec rebuild(sdl :: Absinthe.Language.Source.t() | Absinthe.Language.Blueprint.t()) :: any()
   def rebuild(sdl) do
     prototype_schema = __absinthe_prototype_schema__()
     blueprint = %Absinthe.Blueprint{schema: __MODULE__}

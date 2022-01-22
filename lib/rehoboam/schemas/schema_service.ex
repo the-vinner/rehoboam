@@ -2,6 +2,7 @@ defmodule Rehoboam.Schemas.SchemaService do
   alias Potionx.Context.Service
   alias Rehoboam.Schemas.Schema
   alias Rehoboam.Repo
+  alias Ecto.Multi
   import Ecto.Query
 
   def add_default_fields(changes, user_id) do
@@ -24,6 +25,24 @@ defmodule Rehoboam.Schemas.SchemaService do
     Map.put(changes, :fields, fields)
   end
 
+  def clone(%Schema{} = schema) do
+    %{
+      schema
+      | icon: nil,
+        image: nil,
+        is_latest: true,
+        schema: nil,
+        fields: prep_fields(schema.fields),
+        master_schema_id: schema.id
+    }
+    |> Map.put(:id, nil)
+    |> Map.drop([
+      :user
+    ])
+    |> Ecto.Changeset.cast_assoc(:fields)
+    |> Repo.insert
+  end
+
   def count(%Service{} = ctx) do
     from(item in query(ctx))
     |> select([i], count(i.id))
@@ -32,15 +51,14 @@ defmodule Rehoboam.Schemas.SchemaService do
   end
 
   def delete(%Service{} = ctx) do
-    query(ctx)
-    |> Repo.one()
+    one(ctx)
     |> case do
-      nil ->
-        {:error, "not_found"}
-
-      entry ->
+      {:ok, entry} ->
         entry
         |> Repo.delete()
+
+      err ->
+        err
     end
   end
 
@@ -67,15 +85,50 @@ defmodule Rehoboam.Schemas.SchemaService do
     %Schema{
       user_id: ctx.user.id
     }
-    |> Schema.changeset(
-      add_default_fields(ctx.changes, ctx.user.id)
-    )
+    |> Schema.changeset(add_default_fields(ctx.changes, ctx.user.id))
     |> Repo.insert()
   end
 
   def one(%Service{} = ctx) do
     query(ctx)
     |> Repo.one()
+    |> case do
+      nil -> {:error, "not_found"}
+      res -> {:ok, res}
+    end
+  end
+
+  def prep_fields(associations) do
+    Enum.map(associations, fn assoc ->
+      %{assoc | id: nil, master_field_id: assoc.id}
+      |> Map.from_struct()
+    end)
+  end
+
+  def publish(%Service{} = ctx) do
+    Multi.new()
+    |> Multi.run(:schema_master, fn _, _ ->
+      query(ctx)
+      |> preload([[fields: [:file, :image]], :image, :icon])
+      |> Repo.one()
+      |> case do
+        nil ->
+          {:error, "not_found"}
+
+        schema ->
+          published_at = DateTime.utc_now() |> DateTime.truncate(:second)
+
+          Ecto.Changeset.change(schema, %{published_at: published_at})
+          |> Repo.update()
+      end
+    end)
+    |> Multi.run(:old_schemas_published, fn _, %{schema_master: schema} ->
+      set_other_schemas_as_not_latest(schema.id)
+    end)
+    |> Multi.run(:schema_published, fn _, %{schema_master: master} ->
+      clone(master)
+    end)
+    |> Repo.transaction()
   end
 
   def query(%Service{} = ctx) do
@@ -117,5 +170,14 @@ defmodule Rehoboam.Schemas.SchemaService do
       end)
 
     from(query, where: ^clauses)
+  end
+
+  def set_other_schemas_as_not_latest(master_schema_id) do
+    from(
+      s in Schema,
+      where: s.schema_master_id == ^master_schema_id
+    )
+    |> Repo.update_all(set: [is_latest: false])
+    |> then(fn res -> {:ok, res} end)
   end
 end
