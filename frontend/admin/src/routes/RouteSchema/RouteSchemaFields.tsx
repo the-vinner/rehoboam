@@ -8,6 +8,7 @@ import BtnSmallBordered from "components/Btn/BtnSmallBordered";
 import Draggable from "vuedraggable/src/vuedraggable";
 import Title from "components/Title/Title";
 import fieldCollection from "shared/models/Schemas/Field/fieldCollection.gql";
+import fieldDelete from "shared/models/Schemas/Field/fieldDelete.gql";
 import fieldOrderingMutation from "shared/models/Schemas/Field/fieldOrderingMutation.gql";
 import useQueryTyped from "hooks/useQueryTyped";
 import SchemaFieldRow from "components/SchemaFieldRow/SchemaFieldRow";
@@ -20,6 +21,7 @@ export default defineComponent({
     let toSave: FieldUpdateInput[] = [];
     const isSaving = ref(false)
     let saveTimeout = 0
+    const { executeMutation: executeDelete } = useMutation(fieldDelete)
     const { executeMutation } = useMutation(fieldOrderingMutation)
 
     const { data } = useQueryTyped({
@@ -63,6 +65,10 @@ export default defineComponent({
         save(toSave)
       }, 1000)
     };
+    
+    const remove = (field: Field) => {
+      executeDelete({filters: {id: field.id}})
+    }
 
     const save = (fields: FieldUpdateInput[]) => {
       return executeMutation({ fields })
@@ -119,16 +125,17 @@ export default defineComponent({
                           "h-7",
                           "items-center",
                           "justify-center",
-                          "-right-2",
+                          "right-2",
                           "rounded-full",
                           "shadow-xl",
                           "text-gray-600",
+                          "-translate-y-1/2",
                           "transition",
-                          "-top-2",
+                          "top-1/2",
                           "w-7",
                           "z-3",
                         ]}
-                        // onClick={() => remove(pp)}
+                        onClick={() => remove(el)}
                       >
                         <FontAwesomeIcon class="text-sm" icon={faTimes} />
                       </div>

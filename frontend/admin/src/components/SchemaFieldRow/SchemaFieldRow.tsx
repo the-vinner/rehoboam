@@ -14,6 +14,7 @@ export default defineComponent({
             "border-1",
             "border-slate-300",
             "flex",
+            "flex-1",
             "gap-2",
             "items-center",
             "px-4",
