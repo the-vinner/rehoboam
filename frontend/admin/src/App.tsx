@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@potionapps/utils";
 import { defineComponent, ref, Suspense } from "vue";
 import Wrapper from "./layout/Wrapper/Wrapper";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { routeNames } from "./routes/routeNames";
 
 export default defineComponent({
   name: "App",
@@ -32,9 +33,9 @@ export default defineComponent({
                 "w-full",
               ]}
             >
-              <div class={["text-2xl", "font-bold", "s650:w-[140px]"]}>
+              <router-link class={["text-2xl", "font-bold", "s650:w-[140px]"]} to={{name: routeNames.content}}>
                 Rehoboam
-              </div>
+              </router-link>
               <div class={["flex", "grow", "s650:justify-center"]}>
                 <router-link
                   class={["text-sm", "opacity-50"]}

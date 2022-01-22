@@ -1,10 +1,10 @@
 import { defineComponent } from "vue";
-import { faEdit, faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@potionapps/utils";
 import { RootQueryTypeSchemaCollectionArgs } from "shared/types";
 import { routeNames } from "root/routes/routeNames";
 import BtnSmallBordered from "components/Btn/BtnSmallBordered";
-import schemaCollection from "shared/models/Schemas/Schema/schemaCollection.gql";
+import schemaPublishedCollection from "shared/models/Schemas/Schema/schemaPublishedCollection.gql";
 import useQueryTyped from "hooks/useQueryTyped";
 
 export default defineComponent({
@@ -12,8 +12,8 @@ export default defineComponent({
     const variables: RootQueryTypeSchemaCollectionArgs = {
       first: 200,
     };
-    const { data } = useQueryTyped({
-      query: schemaCollection,
+    const { data, fetching } = useQueryTyped({
+      query: schemaPublishedCollection,
       variables,
     });
     return () => {
@@ -27,7 +27,11 @@ export default defineComponent({
             <FontAwesomeIcon icon={faPlus} />
           </BtnSmallBordered>
           <div class="flex flex-col gap-1 mt-3">
-            {data.value?.schemaCollection?.edges?.map((edge) => {
+            {!fetching.value &&
+              !data.value?.schemaPublishedCollection?.count && (
+                <div class="mt-3 text-slate-500 text-center text-xs">No Published Content Types</div>
+              )}
+            {data.value?.schemaPublishedCollection?.edges?.map((edge) => {
               if (edge?.node) {
                 return (
                   <button
@@ -45,11 +49,11 @@ export default defineComponent({
                   >
                     <div>{edge.node.titleI18n}</div>
                     <router-link
-                      class={[
-                        "group-hover:opacity-100",
-                        "opacity-0"
-                      ]}
-                      to={{ name: routeNames.schema, params: { id: edge.node?.internalId } }}
+                      class={["group-hover:opacity-100", "opacity-0"]}
+                      to={{
+                        name: routeNames.schema,
+                        params: { id: edge.node?.masterSchemaId },
+                      }}
                     >
                       <FontAwesomeIcon icon={faPencilAlt} />
                     </router-link>

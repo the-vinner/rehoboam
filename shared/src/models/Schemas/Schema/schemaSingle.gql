@@ -14,12 +14,10 @@ query schemaSingle(
     insertedAt
     isLatest
     private
-    publishedAt
-    schemaId
+    publishedAtHuman
     slug
     titleI18n
     updatedAt
     userId
-    
   }
 }

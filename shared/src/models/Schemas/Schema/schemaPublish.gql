@@ -1,5 +1,5 @@
-mutation schemaMutation(
-  $filters: SchemaFiltersSingle
+mutation schemaPublish(
+  $filters: SchemaFiltersSingle!
 ) {
   schemaPublish(
     filters: $filters
@@ -20,7 +20,7 @@ mutation schemaMutation(
       insertedAt
       isLatest
       private
-      publishedAt
+      publishedAtHuman
       schemaId
       slug
       titleI18n

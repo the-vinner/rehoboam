@@ -281,6 +281,7 @@ export type RootMutationType = {
   fileMutation?: Maybe<FileMutationResult>;
   schemaDelete?: Maybe<SchemaMutationResult>;
   schemaMutation?: Maybe<SchemaMutationResult>;
+  schemaPublish?: Maybe<SchemaMutationResult>;
   sessionRenew?: Maybe<SignInProviderResult>;
   signInProvider?: Maybe<SignInProviderResult>;
   signOut?: Maybe<SignInProviderResult>;
@@ -328,6 +329,11 @@ export type RootMutationTypeSchemaMutationArgs = {
 };
 
 
+export type RootMutationTypeSchemaPublishArgs = {
+  filters: SchemaFiltersSingle;
+};
+
+
 export type RootMutationTypeSignInProviderArgs = {
   provider: Scalars['String'];
   redirectUrl?: Maybe<Scalars['String']>;
@@ -358,6 +364,8 @@ export type RootQueryType = {
   fileSingle?: Maybe<File>;
   me?: Maybe<User>;
   schemaCollection?: Maybe<SchemaConnection>;
+  schemaPublishedCollection?: Maybe<SchemaConnection>;
+  schemaPublishedSingle?: Maybe<Schema>;
   schemaSingle?: Maybe<Schema>;
   userCollection?: Maybe<UserConnection>;
   userPublicCollection?: Maybe<UserPublicConnection>;
@@ -409,6 +417,22 @@ export type RootQueryTypeSchemaCollectionArgs = {
 };
 
 
+export type RootQueryTypeSchemaPublishedCollectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  filters?: Maybe<SchemaFilters>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  order?: Maybe<SortOrder>;
+  search?: Maybe<Scalars['String']>;
+};
+
+
+export type RootQueryTypeSchemaPublishedSingleArgs = {
+  filters?: Maybe<SchemaFiltersSingle>;
+};
+
+
 export type RootQueryTypeSchemaSingleArgs = {
   filters?: Maybe<SchemaFiltersSingle>;
 };
@@ -449,6 +473,7 @@ export type Schema = Node & {
   __typename?: 'Schema';
   deletedAt?: Maybe<Scalars['DateTime']>;
   descriptionI18n?: Maybe<Scalars['String']>;
+  fields?: Maybe<Array<Maybe<Field>>>;
   file?: Maybe<File>;
   fileId?: Maybe<Scalars['ID']>;
   handle?: Maybe<Scalars['String']>;
@@ -457,10 +482,11 @@ export type Schema = Node & {
   insertedAt?: Maybe<Scalars['NaiveDateTime']>;
   internalId?: Maybe<Scalars['ID']>;
   isLatest?: Maybe<Scalars['Boolean']>;
+  masterSchemaId?: Maybe<Scalars['ID']>;
   private?: Maybe<Scalars['Boolean']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAtHuman?: Maybe<Scalars['String']>;
   schema?: Maybe<Schema>;
-  schemaId?: Maybe<Scalars['ID']>;
   slug?: Maybe<Scalars['String']>;
   titleI18n?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;
@@ -489,9 +515,9 @@ export type SchemaFilters = {
   handle?: Maybe<Scalars['String']>;
   insertedAt?: Maybe<Scalars['NaiveDateTime']>;
   isLatest?: Maybe<Scalars['Boolean']>;
+  masterSchemaId?: Maybe<Scalars['GlobalId']>;
   private?: Maybe<Scalars['Boolean']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
-  schemaId?: Maybe<Scalars['GlobalId']>;
   slug?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;
@@ -509,9 +535,9 @@ export type SchemaInput = {
   handle?: Maybe<Scalars['String']>;
   insertedAt?: Maybe<Scalars['NaiveDateTime']>;
   isLatest?: Maybe<Scalars['Boolean']>;
+  masterSchemaId?: Maybe<Scalars['GlobalId']>;
   private?: Maybe<Scalars['Boolean']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
-  schemaId?: Maybe<Scalars['GlobalId']>;
   slug?: Maybe<Scalars['String']>;
   titleI18n?: Maybe<Scalars['Localized']>;
   updatedAt?: Maybe<Scalars['NaiveDateTime']>;

@@ -1,5 +1,5 @@
 import { computed, defineComponent, ref } from "vue";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faRocket } from "@fortawesome/free-solid-svg-icons";
 import { routeNames } from "../routeNames";
 import { useForm } from "@potionapps/forms";
 import { useRoute, useRouter } from "vue-router";
@@ -8,6 +8,7 @@ import BtnSubmit from "components/Btn/BtnSubmit";
 import FieldInput from "components/FieldInput/FieldInput";
 import FieldTextarea from "components/FieldTextarea/FieldTextarea";
 import schemaMutation from "shared/models/Schemas/Schema/schemaMutation.gql";
+import schemaPublish from "shared/models/Schemas/Schema/schemaPublish.gql";
 import Title from "components/Title/Title";
 import Wrapper from "root/layout/Wrapper/Wrapper";
 import {
@@ -17,6 +18,7 @@ import {
 import { useMutation } from "@urql/vue";
 import useSchemaSingle from "hooks/useSchemaSingle";
 import RouteSchemaFields from "./RouteSchemaFields";
+import BtnSmallSecondary from "components/Btn/BtnSmallSecondary";
 
 export default defineComponent({
   setup() {
@@ -24,14 +26,15 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { executeMutation } = useMutation<RootMutationType>(schemaMutation);
+    const { executeMutation: executePublish, fetching: publishing } =
+      useMutation<RootMutationType>(schemaPublish);
 
     const { isNew, schema } = useSchemaSingle("cache-and-network");
 
     const form = useForm({
       data: computed(() => {
         if (isNew.value) {
-          return {
-          };
+          return {};
         }
         return schema.value;
       }),
@@ -66,6 +69,10 @@ export default defineComponent({
       },
     });
 
+    const publish = () => {
+      executePublish({ filters: { id: route.params.id } });
+    };
+
     return () => {
       return (
         <div class={["min-h-screen", "flex-col", "flex"]}>
@@ -83,7 +90,7 @@ export default defineComponent({
               icon={faArrowLeft}
               to={{ name: routeNames.content }}
             ></BtnIcon>
-            <div>
+            <div class="flex-1">
               <p class="flex gap-1 text-sm">
                 <span class="text-slate-300">/</span>
                 <router-link
@@ -102,6 +109,21 @@ export default defineComponent({
               <Title class="pt-0.5">
                 <h1>New Content Type</h1>
               </Title>
+            </div>
+            <div class="flex flex-col items-end gap-1.5">
+              <BtnSmallSecondary
+                class="grow-0"
+                click={publish}
+                disabled={publishing.value}
+                label="Publish"
+                icon={faRocket}
+              />
+              <p class="text-slate-500 text-xs">
+                Last published:{" "}
+                <span class="text-slate-600">
+                  {schema.value?.publishedAtHuman || "Never"}
+                </span>
+              </p>
             </div>
           </Wrapper>
           <div class={["flex", "grow"]}>

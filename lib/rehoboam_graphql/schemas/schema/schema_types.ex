@@ -14,12 +14,14 @@ defmodule RehoboamGraphQl.Schema.SchemaTypes do
     field :is_latest, :boolean
     field :private, :boolean
     field :published_at, :datetime
+    field :published_at_human, :string,
+      resolve: RehoboamGraphQl.Utils.Time.human_datetime_resolver(:published_at)
     field :schema, :schema, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
-    field :schema_id, :id
+    field :master_schema_id, :id
     field :slug, :string
     field :title_i18n, :string, resolve: RehoboamGraphQl.Resolver.localize(:title_i18n)
     field :file, :file, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
-    # field :fields, list_of(:field), resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
+    field :fields, list_of(:field), resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :updated_at, :naive_datetime
     field :user, :user, resolve: dataloader(RehoboamGraphQl.Resolver.Schema)
     field :user_id, :id

@@ -18,7 +18,7 @@ defmodule RehoboamGraphQl.Schema.SchemaQueries do
       arg(:filters, :schema_filters)
       arg(:order, type: :sort_order, default_value: :asc)
       arg(:search, :string)
-      middleware(RehoboamGraphQl.Middleware.Filters, %{latest: true, published: true})
+      middleware(RehoboamGraphQl.Middleware.Filters, %{is_latest: true, published: true})
       middleware(Potionx.Middleware.RolesAuthorization, roles: [:admin])
       resolve(&RehoboamGraphQl.Resolver.Schema.collection/2)
     end
