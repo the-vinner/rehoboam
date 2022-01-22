@@ -32,14 +32,17 @@ defmodule Rehoboam.Schemas.SchemaService do
         image: nil,
         is_latest: true,
         schema: nil,
-        fields: prep_fields(schema.fields),
+        fields: [],
         master_schema_id: schema.id
     }
     |> Map.put(:id, nil)
     |> Map.drop([
       :user
     ])
-    |> Ecto.Changeset.cast_assoc(:fields)
+    |> Ecto.Changeset.cast(%{
+      fields: prep_fields(schema.fields),
+    }, [])
+    |> Ecto.Changeset.cast_assoc(:fields, with: &Rehoboam.Schemas.Field.changeset_cast/2)
     |> Repo.insert
   end
 
@@ -100,7 +103,7 @@ defmodule Rehoboam.Schemas.SchemaService do
 
   def prep_fields(associations) do
     Enum.map(associations, fn assoc ->
-      %{assoc | id: nil, master_field_id: assoc.id}
+      %{assoc | id: nil, master_field_id: assoc.id, schema_id: nil}
       |> Map.from_struct()
     end)
   end
@@ -175,7 +178,7 @@ defmodule Rehoboam.Schemas.SchemaService do
   def set_other_schemas_as_not_latest(master_schema_id) do
     from(
       s in Schema,
-      where: s.schema_master_id == ^master_schema_id
+      where: s.master_schema_id == ^master_schema_id
     )
     |> Repo.update_all(set: [is_latest: false])
     |> then(fn res -> {:ok, res} end)

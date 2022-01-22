@@ -77,9 +77,9 @@ defmodule RehoboamGraphQl.Schema.FieldMutationTest do
         }
       )
       |> (fn {:ok, res} ->
-            assert res.data["fieldMutation"]["node"]["id"]
-            assert Repo.get(Field, Enum.at(schema.fields, 1).id).ordering === 0
-          end).()
+          assert res.data["fieldMutation"]["node"]["id"]
+          assert Repo.get(Field, Enum.at(schema.fields, 1).id).ordering === 0
+        end).()
     end
   end
 

@@ -15,5 +15,11 @@ defmodule RehoboamGraphQl.Schema.SchemaMutations do
       middleware(Potionx.Middleware.RolesAuthorization, roles: [:admin])
       resolve(&Resolver.Schema.mutation/2)
     end
+
+    field :schema_publish, type: :schema_mutation_result do
+      arg(:filters, non_null(:schema_filters_single))
+      middleware(Potionx.Middleware.RolesAuthorization, roles: [:admin])
+      resolve(&Resolver.Schema.publish/2)
+    end
   end
 end

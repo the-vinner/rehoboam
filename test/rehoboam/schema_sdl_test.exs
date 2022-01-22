@@ -12,7 +12,7 @@ defmodule RehoboamGraphQl.Schemas.SchemaToSdl do
       {:ok, ctx: ctx, entry: Enum.at(entry.fields, 0), schema: entry}
     end
     test "generate_sdl/1", %{schema: schema} do
-      schema = %{schema | schema_id: schema.id}
+      schema = %{schema | master_schema_id: schema.id}
       Rehoboam.Schemas.SchemaToSdl.generate_sdl([schema])
       |> RehoboamGraphQl.Schema.rebuild()
 

@@ -71,6 +71,7 @@ defmodule Rehoboam.Schemas.Field do
                     :is_thumbnail,
                     :is_time,
                     :is_title,
+                    :master_field_id,
                     :meta,
                     :validations,
                     :type
@@ -131,8 +132,8 @@ defmodule Rehoboam.Schemas.Field do
   end
 
   def constrain_ordering(cs) do
-    if ordering = get_change(cs, :ordering) do
-      schema_id = get_field(cs, :schema_id)
+    schema_id = get_field(cs, :schema_id)
+    if ordering = get_change(cs, :ordering) && schema_id do
       max = Rehoboam.Repo.one(from(f in Field, where: f.schema_id == ^schema_id, select: count())) - 1
       put_change(cs, :ordering, Kernel.max(0, ordering) |> Kernel.min(max))
     else

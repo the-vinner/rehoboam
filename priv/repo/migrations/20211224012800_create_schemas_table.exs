@@ -17,6 +17,6 @@ defmodule Rehoboam.Repo.Migrations.CreateSchemasTable do
       timestamps()
     end
 
-    create index(:schemas, [:handle], unique: true, where: "schema_id is null")
+    create index(:schemas, [:handle], unique: true, where: "master_schema_id is null")
   end
 end

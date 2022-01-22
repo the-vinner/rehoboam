@@ -65,7 +65,7 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
     end
   end
 
-  describe "schema patch mutation/2" do
+  describe "schema patch and publish mutation/2, publish/2" do
     setup do
       ctx =
         %Potionx.Context.Service{
@@ -98,6 +98,35 @@ defmodule RehoboamGraphQl.Schema.SchemaMutationTest do
             assert res.data["schemaMutation"]["node"]["internalId"] === "#{entry.id}"
             assert res.data["schemaMutation"]["node"]["private"]
           end).()
+    end
+
+    test "publish schema", %{ctx: ctx, entry: entry} do
+      Elixir.File.read!("shared/src/models/Schemas/Schema/schemaPublish.gql")
+      |> Absinthe.run(
+        RehoboamGraphQl.Schema,
+        context: ctx,
+        variables: %{
+          "filters" => %{
+            "id" =>
+              Absinthe.Relay.Node.to_global_id(
+                :schema,
+                entry.id,
+                RehoboamGraphQl.Schema
+              )
+          }
+        }
+      )
+      |> then(fn {:ok, res} ->
+        assert res.data["schemaPublish"]["node"]["internalId"] === "#{entry.id}"
+        assert res.data["schemaPublish"]["node"]["private"]
+
+        where(Rehoboam.Schemas.Schema, [b], not is_nil(b.master_schema_id))
+        |> preload([:fields])
+        |> Repo.one
+        |> then(fn res ->
+          asset Enum.count(res.fields) === 4
+        end)
+      end)
     end
   end
 end

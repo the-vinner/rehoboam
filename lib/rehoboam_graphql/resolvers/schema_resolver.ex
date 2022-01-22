@@ -105,6 +105,7 @@ defmodule RehoboamGraphQl.Resolver.Schema do
         Rehoboam.Schemas.SchemaToSdl.run()
         |> RehoboamGraphQl.Schema.rebuild()
         {:ok, master}
+      {:error, _, err, _} -> {:error, err}
       err -> err
     end
   end

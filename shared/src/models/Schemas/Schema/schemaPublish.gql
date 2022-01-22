@@ -1,0 +1,32 @@
+mutation schemaMutation(
+  $filters: SchemaFiltersSingle
+) {
+  schemaPublish(
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      internalId
+      deletedAt
+      descriptionI18n
+      fileId
+      handle
+      id
+      insertedAt
+      isLatest
+      private
+      publishedAt
+      schemaId
+      slug
+      titleI18n
+      updatedAt
+      userId
+      
+    }
+  }
+}

@@ -85,6 +85,7 @@ defmodule RehoboamGraphQl.Resolver.Field do
   def mutation(_, %{context: %Service{} = ctx}) do
     FieldService.mutation(ctx)
     |> case do
+      {:ok, %Rehoboam.Schemas.Field{} = f} -> {:ok, f}
       {:ok, %{field: res}} -> {:ok, res}
       {:error, _, err, _} -> {:error, err}
       res -> res
