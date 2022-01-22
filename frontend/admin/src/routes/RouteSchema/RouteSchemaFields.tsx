@@ -12,6 +12,7 @@ import fieldDelete from "shared/models/Schemas/Field/fieldDelete.gql";
 import fieldOrderingMutation from "shared/models/Schemas/Field/fieldOrderingMutation.gql";
 import useQueryTyped from "hooks/useQueryTyped";
 import SchemaFieldRow from "components/SchemaFieldRow/SchemaFieldRow";
+import StateEmpty from "components/StateEmpty/StateEmpty";
 
 export default defineComponent({
   name: "RouteSchemaFields",
@@ -19,10 +20,10 @@ export default defineComponent({
     const draggableState = ref<Field[]>([]);
     const route = useRoute();
     let toSave: FieldUpdateInput[] = [];
-    const isSaving = ref(false)
-    let saveTimeout = 0
-    const { executeMutation: executeDelete } = useMutation(fieldDelete)
-    const { executeMutation } = useMutation(fieldOrderingMutation)
+    const isSaving = ref(false);
+    let saveTimeout = 0;
+    const { executeMutation: executeDelete } = useMutation(fieldDelete);
+    const { executeMutation } = useMutation(fieldOrderingMutation);
 
     const { data } = useQueryTyped({
       query: fieldCollection,
@@ -47,10 +48,7 @@ export default defineComponent({
       moved: { element: Field; newIndex: number; oldIndex: number };
     }) => {
       toSave = draggableState.value.reduce((acc: FieldUpdateInput[], el, i) => {
-        if (
-          i !==
-          fields.value?.find((node) => node?.id === el.id)?.ordering
-        ) {
+        if (i !== fields.value?.find((node) => node?.id === el.id)?.ordering) {
           acc.push({
             id: el.id,
             ordering: i,
@@ -58,21 +56,21 @@ export default defineComponent({
         }
         return acc;
       }, []);
-      window.clearTimeout(saveTimeout)
-      isSaving.value = true
-      window.setTimeout(() => { 
-        isSaving.value = false
-        save(toSave)
-      }, 1000)
+      window.clearTimeout(saveTimeout);
+      isSaving.value = true;
+      window.setTimeout(() => {
+        isSaving.value = false;
+        save(toSave);
+      }, 1000);
     };
-    
+
     const remove = (field: Field) => {
-      executeDelete({filters: {id: field.id}})
-    }
+      executeDelete({ filters: { id: field.id } });
+    };
 
     const save = (fields: FieldUpdateInput[]) => {
-      return executeMutation({ fields })
-    }
+      return executeMutation({ fields });
+    };
 
     watchEffect(() => {
       if (
@@ -92,60 +90,77 @@ export default defineComponent({
               New Field <FontAwesomeIcon icon={faPlus} />
             </BtnSmallBordered>
           </div>
-          <Draggable
+          <div
             class={[
               "border-slate-300",
               "border-1",
-              "flex",
-              "flex-col",
-              "gap-1.5",
-              "px-4",
-              "py-6",
               "rounded-xl",
               "shadow-sm",
               "w-full",
             ]}
-            itemKey="id"
-            onChange={onChange}
-            onInput={onChange}
-            v-model={draggableState.value}
-            v-slots={{
-              item: ({ element: el }: { element: Field; index: number }) => {
-                return (
-                  <div class={[]} key={el!.id}>
-                    <div class={["flex", "relative", "w-full"]}>
-                      <div
-                        class={[
-                          "absolute",
-                          "bg-gray-200",
-                          "cursor-pointer",
-                          "flex",
-                          "hover:bg-gray-800",
-                          "hover:text-white",
-                          "h-7",
-                          "items-center",
-                          "justify-center",
-                          "right-2",
-                          "rounded-full",
-                          "shadow-xl",
-                          "text-gray-600",
-                          "-translate-y-1/2",
-                          "transition",
-                          "top-1/2",
-                          "w-7",
-                          "z-3",
-                        ]}
-                        onClick={() => remove(el)}
-                      >
-                        <FontAwesomeIcon class="text-sm" icon={faTimes} />
+          >
+            {fields.value && !fields.value.length && (
+              <StateEmpty class="py-6" label="No Fields" />
+            )}
+            {fields.value && !!fields.value.length && (
+              <Draggable
+                class={[
+                  "flex",
+                  "flex-col",
+                  "gap-1.5",
+                  "px-4",
+                  "py-6",
+                  "rounded-xl",
+                  "w-full",
+                ]}
+                itemKey="id"
+                onChange={onChange}
+                onInput={onChange}
+                v-model={draggableState.value}
+                v-slots={{
+                  item: ({
+                    element: el,
+                  }: {
+                    element: Field;
+                    index: number;
+                  }) => {
+                    return (
+                      <div class={[]} key={el!.id}>
+                        <div class={["flex", "relative", "w-full"]}>
+                          <div
+                            class={[
+                              "absolute",
+                              "bg-gray-200",
+                              "cursor-pointer",
+                              "flex",
+                              "hover:bg-gray-800",
+                              "hover:text-white",
+                              "h-7",
+                              "items-center",
+                              "justify-center",
+                              "right-2",
+                              "rounded-full",
+                              "shadow-xl",
+                              "text-gray-600",
+                              "-translate-y-1/2",
+                              "transition",
+                              "top-1/2",
+                              "w-7",
+                              "z-3",
+                            ]}
+                            onClick={() => remove(el)}
+                          >
+                            <FontAwesomeIcon class="text-sm" icon={faTimes} />
+                          </div>
+                          <SchemaFieldRow title={el!.titleI18n} />
+                        </div>
                       </div>
-                      <SchemaFieldRow title={el!.titleI18n} />
-                    </div>
-                  </div>
-                );
-              },
-            }}
-          />
+                    );
+                  },
+                }}
+              />
+            )}
+          </div>
         </>
       );
     };
