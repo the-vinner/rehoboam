@@ -13,6 +13,7 @@ export interface FieldSelectProps {
 export default defineComponent({
   name: "FieldSelect",
   props: {
+    disabled: Boolean,
     label: String,
     name: {
       required: true,
@@ -20,7 +21,7 @@ export default defineComponent({
     },
     unstyled: Boolean
   },
-  setup (props: FieldSelectProps, ctx) {
+  setup (props, ctx) {
     const {
       change,
       errors,
@@ -53,6 +54,7 @@ export default defineComponent({
       }
       <select
         class={classes.value}
+        disabled={props.disabled}
         onBlur={onBlur}
         onChange={onChange}
         name={props.name}

@@ -1,7 +1,7 @@
 import { defineComponent } from "vue";
 import { faArrowLeft, faRocket } from "@fortawesome/free-solid-svg-icons";
 import { routeNames } from "../routeNames";
-import { routerKey, useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BtnIcon from "components/Btn/BtnIcon";
 import schemaPublish from "shared/models/Schemas/Schema/schemaPublish.gql";
 import Title from "components/Title/Title";

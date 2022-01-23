@@ -16,6 +16,7 @@ import FieldTextarea from "components/FieldTextarea/FieldTextarea";
 import Wrapper from "root/layout/Wrapper/Wrapper";
 import BtnSubmit from "components/Btn/BtnSubmit";
 import Title from "components/Title/Title";
+import FieldSelect from "components/FieldSelect/FieldSelect";
 
 type FieldTypeOption = {
   title: String;
@@ -89,27 +90,35 @@ export default defineComponent({
       placeholderI18n: {
         name: "placeholderI18n",
         label: "Placeholder Text",
-        placeholder: "Placeholder Text..."
+        placeholder: "Placeholder Text...",
       },
       titleI18n: {
         label: "Title",
         name: "titleI18n",
-        placeholder: "Title..."
+        placeholder: "Title...",
       },
       type: {
         label: "Field Type",
         name: "type",
         options: fieldTypeOptions,
+        validations: [
+          {
+            name: "required"
+          }
+        ]
       },
     };
     const form = useForm({
       data: computed(() => {
         if (isNew.value) {
-          return {};
+          return {
+          };
         }
         return field.value;
       }),
-      fields: [],
+      fields: [
+        fields.type!
+      ],
       onSubmit: (cs) => {
         serverError.value = "";
         const params: RootMutationTypeFieldMutationArgs = {
@@ -129,12 +138,9 @@ export default defineComponent({
               });
             }
             if (res.error) serverError.value = res.error.message;
-            return false;
-          } else if (isNew.value) {
             router.push({
               name: routeNames.schema,
               params: {
-                fieldId: res.data?.fieldMutation?.node?.internalId,
                 id: route.params.id,
               },
             });
@@ -147,45 +153,50 @@ export default defineComponent({
 
     return () => {
       return (
-          <form>
-            <div class={[
-              "flex",
-              "flex-col",
-              "gap-4",
-              "px-4",
-              "s650:px-12",
-            ]}>
-              <Title>{isNew.value ? "New Field" : field.value?.titleI18n}</Title>
-              <div>
-                <FieldInput inputClasses={["text-2xl"]} {...fields.titleI18n!} />
-              </div>
-              <div>
-                <FieldTextarea {...fields.descriptionI18n!} />
-              </div>
-              <div>
-                <FieldInput {...fields.placeholderI18n!} />
-              </div>
-              {!isNew.value && (
-                <div>
-                  <FieldInput
-                    disabled={true}
-                    {...fields.handle!}
-                  />
-                </div>
-              )}
+        <form onSubmit={form.submit}>
+          <div class={["flex", "flex-col", "gap-4", "px-4", "s650:px-12"]}>
+            <Title>{isNew.value ? "New Field" : field.value?.titleI18n}</Title>
+            <div>
+              <FieldInput inputClasses={["text-2xl"]} {...fields.titleI18n!} />
             </div>
-            <div class={[
+            <div>
+              <FieldTextarea {...fields.descriptionI18n!} />
+            </div>
+            <div>
+              <FieldInput {...fields.placeholderI18n!} />
+            </div>
+            <div>
+              <FieldSelect
+                disabled={!isNew.value}
+                label={fields.type?.label}
+                name={fields.type?.name!}
+              >
+                <option value="" disabled selected>Select Type</option>
+                {fields.type?.options?.map(opt => {
+                  return <option value={opt.value}>{opt.title}</option>
+                })}
+              </FieldSelect>
+            </div>
+            {!isNew.value && (
+              <div>
+                <FieldInput disabled={true} {...fields.handle!} />
+              </div>
+            )}
+          </div>
+          <div
+            class={[
               "bg-slate-200",
               "bottom-0",
               "mt-10",
               "px-4",
               "s650:px-12",
               "py-6",
-              "sticky"
-            ]}>
-              <BtnSubmit class="w-full" />
-            </div>
-          </form>
+              "sticky",
+            ]}
+          >
+            <BtnSubmit class="w-full" />
+          </div>
+        </form>
       );
     };
   },

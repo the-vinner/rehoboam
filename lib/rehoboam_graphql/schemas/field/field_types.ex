@@ -87,7 +87,7 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
   end
   input_object :field_input do
     field :deleted_at, :datetime
-    field :description_i18n, :json
+    field :description_i18n, :localized
     field :file_id, :global_id
     field :handle, :string
     field :image_id, :global_id
@@ -101,9 +101,9 @@ defmodule RehoboamGraphQl.Schema.FieldTypes do
     field :is_title, :boolean
     field :meta, :json
     field :ordering, :integer
-    field :placeholder_i18n, :json
+    field :placeholder_i18n, :localized
     field :schema_id, :global_id
-    field :title_i18n, :json
+    field :title_i18n, :localized
     field :type, :field_types
     field :updated_at, :naive_datetime
     field :user_id, :global_id
