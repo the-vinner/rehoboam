@@ -26,7 +26,7 @@ export default defineComponent({
       return <>
         <button
           class={[
-            internalValue.value ? 'bg-emerald-500' : 'bg-gray-600',
+            internalValue.value ? 'bg-green-700' : 'bg-gray-600',
             "relative", "inline-flex", "flex-shrink-0", "h-[22px]", "w-[48px]", "border-2", "border-transparent",
             "rounded-full", "cursor-pointer", "transition-colors",
             "ease-in-out", "duration-200", "focus:outline-none", "focus-visible:ring-2",
