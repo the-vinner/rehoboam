@@ -33,6 +33,14 @@ defmodule Rehoboam.Schemas.FieldService do
     |> Repo.transaction()
   end
 
+  def get_ordering_for_new(%{ordering: o}), do: o
+  def get_ordering_for_new(%{schema_id: schema_id}) do
+    from(f in Field, where: f.schema_id == ^schema_id)
+    |> select(count("*"))
+    |> Repo.one
+  end
+  def get_ordering_for_new(_), do: nil
+
   def mutation(%Service{filters: %{id: id}} = ctx) when not is_nil(id) do
     query(ctx)
     |> Repo.one
@@ -44,10 +52,13 @@ defmodule Rehoboam.Schemas.FieldService do
     end
   end
   def mutation(%Service{} = ctx) do
+    ordering = get_ordering_for_new(ctx.changes)
     %Field{
       user_id: ctx.user.id
     }
-    |> Field.changeset(ctx.changes)
+    |> Field.changeset(
+      Map.put(ctx.changes, :ordering, ordering)
+    )
     |> Repo.insert
   end
 

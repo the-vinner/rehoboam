@@ -175,14 +175,14 @@ defmodule Rehoboam.Schemas.Field do
           :is_time,
           :is_title
         ]
-        |> Enum.map(fn k ->
+        |> Enum.each(fn k ->
           if get_change(cs, k) do
             from(f in Field, where: f.schema_id == ^schema_id)
             |> cs.repo.update_all([{k, false}])
-          else
-            {:ok, nil}
           end
         end)
+
+        cs
       end)
     else
       cs
