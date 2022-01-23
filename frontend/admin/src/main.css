@@ -1,1 +1,4 @@
 body { font-family: "InterVariable", "system-ui"; }
+.appModalActive #app {
+    @apply hidden s650:block;
+  }

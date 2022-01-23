@@ -1,6 +1,6 @@
 schema: http://localhost:4000/graphql/v1
 generates:
-  ./src/types.d.ts:
+  ./src/types.ts:
     plugins:
       - typescript
   ./src/introspection.json:

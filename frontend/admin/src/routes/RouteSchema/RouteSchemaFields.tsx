@@ -13,6 +13,7 @@ import fieldOrderingMutation from "shared/models/Schemas/Field/fieldOrderingMuta
 import useQueryTyped from "hooks/useQueryTyped";
 import SchemaFieldRow from "components/SchemaFieldRow/SchemaFieldRow";
 import StateEmpty from "components/StateEmpty/StateEmpty";
+import { routeNames } from "../routeNames";
 
 export default defineComponent({
   name: "RouteSchemaFields",
@@ -86,7 +87,13 @@ export default defineComponent({
         <>
           <div class="flex items-center justify-between mb-3">
             <Title>Fields</Title>
-            <BtnSmallBordered class="gap-3">
+            <BtnSmallBordered
+              class="gap-3"
+              to={{
+                name: routeNames.schema,
+                params: { id: route.params.id, fieldId: "0" },
+              }}
+            >
               New Field <FontAwesomeIcon icon={faPlus} />
             </BtnSmallBordered>
           </div>

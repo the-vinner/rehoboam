@@ -21,7 +21,7 @@ const routes : RouteRecordRaw[] = [
   },
   {
     name: routeNames.schema,
-    path: '/schemas/:id',
+    path: '/schemas/:id/:fieldId?',
     component: () => import('./RouteSchema/RouteSchema')
   },
   {

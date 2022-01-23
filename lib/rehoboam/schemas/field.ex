@@ -62,10 +62,9 @@ defmodule Rehoboam.Schemas.Field do
     :user_id
   ]
   @allowed_fields [
-                    :is_body,
-                    :is_description,
                     :handle,
                     :is_body,
+                    :is_description,
                     :is_image,
                     :is_location,
                     :is_thumbnail,
@@ -116,6 +115,7 @@ defmodule Rehoboam.Schemas.Field do
     |> Rehoboam.Changeset.merge_localized_value(:title_i18n, params)
     |> constrain_ordering
     |> adjust_ordering
+    |> ensure_standardization_marker_uniqueness
     |> unique_constraint([:handle, :schema_id])
     |> validate_required(@required_fields)
   end
@@ -154,6 +154,36 @@ defmodule Rehoboam.Schemas.Field do
           separator: "_"
         ]
       )
+    else
+      cs
+    end
+  end
+
+  @spec ensure_standardization_marker_uniqueness(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def ensure_standardization_marker_uniqueness(cs) do
+    schema_id = get_field(cs, :schema_id)
+
+    if schema_id do
+      cs
+      |> prepare_changes(fn cs ->
+        [
+          :is_body,
+          :is_description,
+          :is_image,
+          :is_location,
+          :is_thumbnail,
+          :is_time,
+          :is_title
+        ]
+        |> Enum.map(fn k ->
+          if get_change(cs, k) do
+            from(f in Field, where: f.schema_id == ^schema_id)
+            |> cs.repo.update_all([{k, false}])
+          else
+            {:ok, nil}
+          end
+        end)
+      end)
     else
       cs
     end

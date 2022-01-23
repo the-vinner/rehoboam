@@ -1,74 +1,44 @@
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { faArrowLeft, faRocket } from "@fortawesome/free-solid-svg-icons";
 import { routeNames } from "../routeNames";
-import { useForm } from "@potionapps/forms";
-import { useRoute, useRouter } from "vue-router";
+import { routerKey, useRoute, useRouter } from "vue-router";
 import BtnIcon from "components/Btn/BtnIcon";
-import BtnSubmit from "components/Btn/BtnSubmit";
-import FieldInput from "components/FieldInput/FieldInput";
-import FieldTextarea from "components/FieldTextarea/FieldTextarea";
-import schemaMutation from "shared/models/Schemas/Schema/schemaMutation.gql";
 import schemaPublish from "shared/models/Schemas/Schema/schemaPublish.gql";
 import Title from "components/Title/Title";
 import Wrapper from "root/layout/Wrapper/Wrapper";
 import {
   RootMutationType,
-  RootMutationTypeSchemaMutationArgs,
 } from "shared/types";
 import { useMutation } from "@urql/vue";
 import useSchemaSingle from "hooks/useSchemaSingle";
 import RouteSchemaFields from "./RouteSchemaFields";
 import BtnSmallSecondary from "components/Btn/BtnSmallSecondary";
+import RouteSchemaForm from "./RouteSchemaForm";
+import Modal from "components/Modal/Modal";
+import RouteField from "../RouteField/RouteField";
+import useModal from "components/Modal/useModal";
 
 export default defineComponent({
   setup() {
-    const serverError = ref("");
     const route = useRoute();
-    const router = useRouter();
-    const { executeMutation } = useMutation<RootMutationType>(schemaMutation);
+    const router = useRouter()
+    const {
+      bodyModalClassAdd,
+      bodyModalClassRemove
+    } = useModal()
+    const closeModal = () => {
+      bodyModalClassRemove()
+      router.push({
+        name: route.name!,
+        params: {
+          id: route.params.id
+        }
+      })
+    }
     const { executeMutation: executePublish, fetching: publishing } =
       useMutation<RootMutationType>(schemaPublish);
 
     const { isNew, schema } = useSchemaSingle("cache-and-network");
-
-    const form = useForm({
-      data: computed(() => {
-        if (isNew.value) {
-          return {};
-        }
-        return schema.value;
-      }),
-      fields: [],
-      onSubmit: (cs) => {
-        serverError.value = "";
-        const params: RootMutationTypeSchemaMutationArgs = {
-          changes: {
-            ...cs.changes,
-          },
-        };
-        if (!isNew.value) params.filters = { id: route.params.id };
-        return executeMutation(params).then((res) => {
-          if (res.error || res.data?.schemaMutation?.errorsFields?.length) {
-            if (res.data?.schemaMutation?.errorsFields?.length) {
-              res.data?.schemaMutation?.errorsFields.forEach((err) => {
-                form.setServerError(err?.field, err?.message);
-              });
-            }
-            if (res.error) serverError.value = res.error.message;
-            return false;
-          } else {
-            router.push({
-              name: routeNames.schema,
-              params: {
-                id: res.data?.schemaMutation?.node?.internalId,
-              },
-            });
-            return false;
-          }
-        });
-      },
-    });
-
     const publish = () => {
       executePublish({ filters: { id: route.params.id } });
     };
@@ -107,7 +77,7 @@ export default defineComponent({
                 <span class="text-slate-300">/</span>
               </p>
               <Title class="pt-0.5">
-                <h1>New Content Type</h1>
+                <h1>{isNew.value ? "New Content Type" : schema.value?.titleI18n}</h1>
               </Title>
             </div>
             <div class="flex flex-col items-end gap-1.5">
@@ -127,37 +97,15 @@ export default defineComponent({
             </div>
           </Wrapper>
           <div class={["flex", "grow"]}>
-            <Wrapper class={["max-w-screen", "mx-auto", "pt-6", "w-[600px]"]}>
-              <form
-                class={["flex", "flex-col", "gap-4"]}
-                onSubmit={form.submit}
-              >
-                <div>
-                  <FieldInput
-                    inputClasses={["text-2xl"]}
-                    name="titleI18n"
-                    placeholder="Content Type Title..."
-                  />
+            {
+              !!route.params.fieldId &&
+              <Modal close={closeModal} onMounted={bodyModalClassAdd}>
+                <div class="pt-12">
+                  <RouteField />
                 </div>
-                <FieldTextarea
-                  name="descriptionI18n"
-                  placeholder="Description..."
-                />
-                {!isNew.value && (
-                  <div>
-                    <FieldInput
-                      disabled={true}
-                      label="Handle"
-                      name="handle"
-                      placeholder="Handle..."
-                    />
-                  </div>
-                )}
-                <footer class={["sticky", "bottom-2"]}>
-                  <BtnSubmit class="w-full" />
-                </footer>
-              </form>
-            </Wrapper>
+              </Modal>
+            }
+            <RouteSchemaForm />
             {route.params.id !== "0" && (
               <Wrapper
                 class={["border-l-1", "border-slate-300", "grow", "pt-4"]}

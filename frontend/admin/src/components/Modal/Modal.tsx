@@ -1,11 +1,12 @@
 import { defineComponent, Teleport, PropType, ref, Transition, onMounted, onBeforeUnmount } from "vue";
 import { FontAwesomeIcon } from "@potionapps/utils";
-import { faTimes } from "@fortawesome/pro-regular-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default defineComponent({
   props: {
     close: Function as PropType<(e: MouseEvent | KeyboardEvent | undefined) => void>,
-    lightbox: Boolean
+    lightbox: Boolean,
+    onMounted: Function as PropType<() => any>
   },
   setup (props, ctx) {
     const $container = ref<HTMLElement | null>(null)
@@ -29,6 +30,7 @@ export default defineComponent({
       document.removeEventListener('keyup', maybeClose)
     })
     onMounted(() => {
+      props.onMounted?.()
       document.addEventListener('keyup', maybeClose, { passive: true })
     })
 
@@ -62,7 +64,7 @@ export default defineComponent({
               "s650:rounded",
               "max-w-full",
               "relative",
-              (props.lightbox ? 's650:w-auto' : 'bg-white s650:w-[500px]'),
+              (props.lightbox ? 's650:w-auto' : 'bg-white s650:w-[650px]'),
               "w-full"
              ]}
              ref={$container}
