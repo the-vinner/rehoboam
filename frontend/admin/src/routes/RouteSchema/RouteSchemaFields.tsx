@@ -1,5 +1,5 @@
 import { computed, defineComponent, ref, toRaw, watchEffect } from "vue";
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@potionapps/utils";
 import { Field, FieldUpdateInput, RootMutationType } from "shared/types";
 import { useMutation } from "@urql/vue";
@@ -137,27 +137,53 @@ export default defineComponent({
                           <div
                             class={[
                               "absolute",
-                              "bg-gray-200",
                               "cursor-pointer",
                               "flex",
-                              "hover:bg-gray-800",
-                              "hover:text-white",
-                              "h-7",
-                              "items-center",
-                              "justify-center",
+                              "gap-2",
                               "right-2",
-                              "rounded-full",
-                              "shadow-xl",
                               "text-gray-600",
                               "-translate-y-1/2",
                               "transition",
                               "top-1/2",
-                              "w-7",
                               "z-3",
                             ]}
-                            onClick={() => remove(el)}
                           >
-                            <FontAwesomeIcon class="text-sm" icon={faTimes} />
+                            <router-link
+                              class={[
+                                "bg-gray-200",
+                                "cursor-pointer",
+                                "flex",
+                                "hover:bg-gray-800",
+                                "hover:text-white",
+                                "h-7",
+                                "items-center",
+                                "justify-center",
+                                "rounded-full",
+                                "shadow-xl",
+                                "w-7",
+                              ]}
+                              to={{name: routeNames.schema, params: {fieldId: el.internalId, id: route.params.id}}}
+                            >
+                              <FontAwesomeIcon class="text-sm" icon={faPencilAlt} />
+                            </router-link>
+                            <div
+                              class={[
+                                "bg-gray-200",
+                                "cursor-pointer",
+                                "flex",
+                                "hover:bg-gray-800",
+                                "hover:text-white",
+                                "h-7",
+                                "items-center",
+                                "justify-center",
+                                "rounded-full",
+                                "shadow-xl",
+                                "w-7",
+                              ]}
+                              onClick={() => remove(el)}
+                            >
+                              <FontAwesomeIcon class="text-sm" icon={faTimes} />
+                            </div>
                           </div>
                           <SchemaFieldRow title={el!.titleI18n} />
                         </div>

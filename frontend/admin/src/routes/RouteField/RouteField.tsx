@@ -124,11 +124,12 @@ export default defineComponent({
         const params: RootMutationTypeFieldMutationArgs = {
           changes: {
             ...cs.changes,
-            schemaId: route.params.id,
           },
         };
         if (!isNew.value) {
           params.filters = { id: route.params.fieldId };
+        } else {
+          cs.changes.schemaId = route.params.id
         }
         return executeMutation(params).then((res) => {
           if (res.error || res.data?.schemaMutation?.errorsFields?.length) {

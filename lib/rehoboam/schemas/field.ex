@@ -79,8 +79,8 @@ defmodule Rehoboam.Schemas.Field do
   def adjust_ordering(cs) do
     cs
     |> prepare_changes(fn changeset ->
-      ordering_next = get_change(changeset, :ordering)
       ordering_current = changeset.data.ordering
+      ordering_next = get_change(changeset, :ordering) || ordering_current
       schema_id = get_field(changeset, :schema_id)
       query = from(f in Field, where: f.schema_id == ^schema_id)
 
