@@ -182,6 +182,17 @@ defmodule RehoboamGraphQl.Schema do
     end)
   end
 
+  scalar :localized_map do
+    parse(fn
+      %{value: v}, %Potionx.Context.Service{locale: locale, locale_default: locale_default} ->
+        value = not is_nil(v) && is_binary(v) && Jason.decode!(v) || nil
+        {:ok, Map.put(%{}, to_string(locale || locale_default), value)}
+
+      _, _ ->
+        {:ok, nil}
+    end)
+  end
+
   import_types(RehoboamGraphQl.Schema.AuthMutations)
   import_types(RehoboamGraphQl.Schema.UserIdentityTypes)
   import_types(RehoboamGraphQl.Schema.UserMutations)
