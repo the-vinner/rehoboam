@@ -23,7 +23,7 @@ mutation schemaMutation(
       isLatest
       private
       publishedAt
-      schemaId
+      masterSchemaId
       slug
       titleI18n
       updatedAt

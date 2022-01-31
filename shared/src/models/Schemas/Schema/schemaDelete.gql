@@ -20,7 +20,7 @@ mutation schemaDelete(
       isLatest
       private
       publishedAt
-      schemaId
+      masterSchemaId
       slug
       titleI18n
       updatedAt
