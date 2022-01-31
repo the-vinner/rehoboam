@@ -85,6 +85,9 @@ defmodule Rehoboam.Changeset do
           )
         end
       )
+      |> then(fn res ->
+        put_change(cs, key, res)
+      end)
     else
       cs
     end
