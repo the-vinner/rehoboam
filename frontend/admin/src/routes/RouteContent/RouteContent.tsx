@@ -1,3 +1,4 @@
+import AddEntryDropdown from "components/AddEntryDropdown/AddEntryDropdown";
 import SidebarSchemas from "components/SidebarSchemas/SidebarSchemas";
 import StateEmpty from "components/StateEmpty/StateEmpty";
 import Sidebar from "root/layout/Sidebar/Sidebar";
@@ -17,7 +18,9 @@ export default defineComponent({
             <StateEmpty label="No Content" />
           </div>
         </Wrapper>
-        <Sidebar right={true}></Sidebar>
+        <Sidebar right={true}>
+          <AddEntryDropdown />
+        </Sidebar>
       </div>
     );
   },
