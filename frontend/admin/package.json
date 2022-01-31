@@ -27,6 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@headlessui/vue": "^1.4.3",
     "@potionapps/forms": "^0.3.6",
     "@potionapps/utils": "0.0.4",
     "@urql/core": "^2.3.6",
