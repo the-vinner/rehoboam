@@ -84,7 +84,9 @@ defmodule Rehoboam.DataCase do
 
     %{
       ctx
-      | roles: [:admin],
+      |
+        locale: "en-US",
+        roles: [:admin],
         session: %{
           id: 1,
           user: user
