@@ -1,0 +1,14 @@
+{
+  "dataI18n": {},
+  "descriptionI18n": {},
+  "entryMasterId": "some entry_master_id",
+  "handle": "some handle",
+  "id": "some id",
+  "insertedAt": "2022-01-30T00:57:00",
+  "metaI18n": {},
+  "publishedAt": "2022-01-30T00:57:00Z",
+  "schemaId": "some schema_id",
+  "titleI18n": {},
+  "updatedAt": "2022-01-30T00:57:00",
+  "userId": "some user_id"
+}

@@ -1,0 +1,60 @@
+[
+  {
+    "name": "dataI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "descriptionI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "entryMasterId",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "handle",
+    "type": "string",
+    "validations": []
+  },
+  {
+    "name": "id",
+    "type": "id",
+    "validations": []
+  },
+  {
+    "name": "metaI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "publishedAt",
+    "type": "datetime",
+    "validations": []
+  },
+  {
+    "name": "schemaId",
+    "type": "id",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  },
+  {
+    "name": "titleI18n",
+    "type": "json",
+    "validations": []
+  },
+  {
+    "name": "userId",
+    "type": "id",
+    "validations": [
+      {
+        "name": "required"
+      }
+    ]
+  }
+]

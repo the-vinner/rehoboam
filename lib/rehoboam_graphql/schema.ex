@@ -57,6 +57,8 @@ defmodule RehoboamGraphQl.Schema do
 
   node interface do
     resolve_type(fn
+      %Rehoboam.Entries.Entry{}, _ ->
+        :entry
       %Rehoboam.Schemas.Field{}, _ ->
         :field
 
@@ -93,6 +95,7 @@ defmodule RehoboamGraphQl.Schema do
       RehoboamGraphQl.Resolver.Field,
       RehoboamGraphQl.Resolver.Field.data()
     )
+    |> Dataloader.add_source(RehoboamGraphQl.Resolver.Entry, RehoboamGraphQl.Resolver.Entry.data())
   end
 
   def get_key(%{source: source} = res, key) do
@@ -151,6 +154,7 @@ defmodule RehoboamGraphQl.Schema do
     import_fields(:file_queries)
     import_fields(:schema_queries)
     import_fields(:field_queries)
+    import_fields :entry_queries
   end
 
   mutation do
@@ -159,6 +163,7 @@ defmodule RehoboamGraphQl.Schema do
     import_fields(:file_mutations)
     import_fields(:schema_mutations)
     import_fields(:field_mutations)
+    import_fields :entry_mutations
   end
 
   interface :rehoboam_mutation do
@@ -245,4 +250,7 @@ defmodule RehoboamGraphQl.Schema do
     blueprint
     |> Absinthe.Pipeline.run(pipeline)
   end
+  import_types RehoboamGraphQl.Schema.EntryMutations
+  import_types RehoboamGraphQl.Schema.EntryQueries
+  import_types RehoboamGraphQl.Schema.EntryTypes
 end

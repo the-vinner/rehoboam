@@ -1,0 +1,29 @@
+mutation entryDelete(
+  $filters: EntryFiltersSingle
+) {
+  entryDelete(
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      dataI18n
+      descriptionI18n
+      entryMasterId
+      handle
+      id
+      insertedAt
+      metaI18n
+      publishedAt
+      schemaId
+      titleI18n
+      updatedAt
+      userId
+      
+    }
+  }
+}

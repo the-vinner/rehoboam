@@ -1,0 +1,46 @@
+query entryCollection(
+  $after: String,
+  $before: String,
+  $first: Int,
+  $last: Int,
+  $filters: EntryFilters,
+  $search: String
+) {
+  entryCollection(
+    after: $after,
+    before: $before,
+    first: $first,
+    filters: $filters,
+    last: $last,
+    search: $search
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    count
+    countBefore
+    edges {
+      node {
+        __typename
+        internalId
+        dataI18n
+        descriptionI18n
+        entryMasterId
+        handle
+        id
+        insertedAt
+        metaI18n
+        publishedAt
+        schemaId
+        titleI18n
+        updatedAt
+        userId
+        
+      }
+      cursor
+    }
+  }
+}

@@ -1,0 +1,32 @@
+mutation entryMutation(
+  $changes: EntryInput,
+  $filters: EntryFiltersSingle
+) {
+  entryMutation(
+    changes: $changes,
+    filters: $filters
+  ) {
+    errors
+    errorsFields {
+      field
+      message
+    }
+    node {
+      __typename
+      internalId
+      dataI18n
+      descriptionI18n
+      entryMasterId
+      handle
+      id
+      insertedAt
+      metaI18n
+      publishedAt
+      schemaId
+      titleI18n
+      updatedAt
+      userId
+      
+    }
+  }
+}
