@@ -1,23 +1,15 @@
 defmodule RehoboamGraphQl.Schema.EntryQueryTest do
   use Rehoboam.DataCase
   alias Rehoboam.Entries.EntryMock
-  alias Rehoboam.Entries.EntryService
 
   describe "entry collection and single" do
     setup do
-      ctx = %Potionx.Context.Service{
-          changes: EntryMock.run(),
-          roles: [:admin],
-          session: %{
-            id: 1,
-            user: %{
-              id: 1,
-              roles: [:admin]
-            }
-          }
+      ctx =
+        %Potionx.Context.Service{
+          changes: EntryMock.run()
         }
-      {:ok, entry} = EntryService.mutation(ctx)
-      {:ok, ctx: ctx, entry: entry}
+        |> prepare_ctx
+      {:ok, ctx: ctx, entry: create_entry(ctx.user)}
     end
     test "returns collection of entry", %{ctx: ctx} do
       File.read!("shared/src/models/Entries/Entry/entryCollection.gql")

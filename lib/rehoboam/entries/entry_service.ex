@@ -33,7 +33,9 @@ defmodule Rehoboam.Entries.EntryService do
     end
   end
   def mutation(%Service{} = ctx) do
-    %Entry{}
+    %Entry{
+      user_id: ctx.user.id
+    }
     |> Entry.changeset(ctx.changes)
     |> Repo.insert
   end

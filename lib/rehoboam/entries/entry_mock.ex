@@ -5,7 +5,6 @@ defmodule Rehoboam.Entries.EntryMock do
       description_i18n: %{},
       entry_master_id: "some entry_master_id",
       handle: "some handle",
-      id: "some id",
       inserted_at: ~N[2022-01-30 00:57:00],
       meta_i18n: %{},
       published_at: ~U[2022-01-30 00:57:00Z],

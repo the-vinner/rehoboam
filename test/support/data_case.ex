@@ -33,6 +33,39 @@ defmodule Rehoboam.DataCase do
     :ok
   end
 
+  def create_entry(user) do
+    ctx =
+      %Potionx.Context.Service{
+        user: user
+      }
+    schema = create_schema(user)
+    {:ok, %{schema_published: schema_published}} =
+      Rehoboam.Schemas.SchemaService.publish(%{
+        ctx | filters: %{ id: schema.id }
+      })
+    {:ok, entry} = Rehoboam.Entries.EntryService.mutation(%{
+      ctx |
+        changes: Map.merge(
+          Rehoboam.Entries.EntryMock.run(),
+          %{
+            schema_id: schema_published.id
+          }
+        )
+    })
+
+    entry
+  end
+
+  def create_schema(user) do
+    ctx =
+      %Potionx.Context.Service{
+        changes: Rehoboam.Schemas.SchemaMock.run(),
+        user: user
+      }
+    {:ok, schema} = Rehoboam.Schemas.SchemaService.mutation(ctx)
+    schema
+  end
+
   def create_user(email \\ "test@example.local") do
     Rehoboam.Users.UserService.mutation(%Potionx.Context.Service{
       changes: %{

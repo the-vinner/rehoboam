@@ -6,7 +6,7 @@ defmodule Rehoboam.Repo.Migrations.CreateEntries do
       add :data_i18n, :map
       add :description_i18n, :map
       add :handle, :string
-      add :master_entry_id, references(:entries, on_delete: :delete_all), null: false
+      add :master_entry_id, references(:entries, on_delete: :delete_all)
       add :meta_i18n, :map
       add :published_at, :utc_datetime
       add :schema_id, references(:schemas, on_delete: :delete_all), null: false

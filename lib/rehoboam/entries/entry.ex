@@ -30,6 +30,10 @@ defmodule Rehoboam.Entries.Entry do
     ])
     |> assoc_constraint(:schema)
     |> assoc_constraint(:user)
+    |> Rehoboam.Changeset.merge_localized_map(:data_i18n, attrs)
+    |> Rehoboam.Changeset.merge_localized_value(:description_i18n, attrs)
+    |> Rehoboam.Changeset.merge_localized_map(:meta_i18n, attrs)
+    |> Rehoboam.Changeset.merge_localized_value(:title_i18n, attrs)
     |> validate_required([:user_id, :schema_id])
   end
 end
